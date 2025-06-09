@@ -35,8 +35,11 @@ const columns = ref([
     },
   },
   {
-    title: '分值设置',
+    title(){
+      return <div>分值设置 <span className="title-desc">设置分数等级和分值</span></div>
+    },
     key: 'configs',
+
     render(row, index) {
       return <RatingMatrixValuesConfig model={row.configs} dataIndex={index} />
     },
@@ -71,3 +74,12 @@ defineExpose({
   },
 })
 </script>
+
+
+<style>
+.title-desc {
+  font-size: 12px;
+  color: #999;
+  margin-left: 4px;
+}
+</style>

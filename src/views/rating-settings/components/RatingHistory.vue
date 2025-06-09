@@ -59,7 +59,7 @@ const columns = ref([
     width: 100,
     render(row) {
       return (
-        <n-button quaternary type="text" onClick={() => handleView(row)}>
+        <n-button quaternary type="info" onClick={() => handleView(row)}>
           查看
         </n-button>
       )
