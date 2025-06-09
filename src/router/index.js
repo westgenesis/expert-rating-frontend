@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { StarReview, Settings } from '@vicons/carbon'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,17 +7,39 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      component: () => import('../components/Layout/index.vue'),
+      meta: { title: '专家评测系统' },
+      redirect: '/expert-rating',
+      children: [
+        {
+          path: 'expert-rating',
+          name: 'expert-rating',
+          component: () => import('../views/expert-rating/index.vue'),
+          meta: { title: '专家评测', icon: StarReview },
+        },
+        {
+          path: 'rating-results',
+          name: 'rating-results',
+          component: () => import('../views/rating-results/index.vue'),
+          meta: { title: '评测结果', icon: StarReview },
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: () => import('../views/rating-settings/index.vue'),
+          meta: { title: '设置', icon: Settings },
+        },
+      ],
     },
   ],
+})
+
+// 设置路由元信息，动态修改页面标题
+router.beforeEach((to, from, next) => {
+  if (to.meta?.title) {
+    document.title = to.meta.title
+  }
+  next()
 })
 
 export default router
