@@ -36,8 +36,14 @@ const router = createRouter({
 
 // 设置路由元信息，动态修改页面标题
 router.beforeEach((to, from, next) => {
+  // 如果路由有meta.title，则设置页面标题
   if (to.meta?.title) {
     document.title = to.meta.title
+  }
+
+  // 如果路由query中有token，则将其存储到localStorage
+  if (to.query.token) {
+    localStorage.setItem('token', to.query.token)
   }
   next()
 })

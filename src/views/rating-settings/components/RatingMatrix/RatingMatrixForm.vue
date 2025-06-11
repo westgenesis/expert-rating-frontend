@@ -18,7 +18,6 @@ const columns = ref([
     key: 'dimensionName',
     width: 200,
     render(row, index) {
-      // 这里的校验不生效
       return (
         <n-form-item
           path={`data[${index}].dimensionName`}

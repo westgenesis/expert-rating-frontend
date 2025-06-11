@@ -6,12 +6,12 @@
       </n-icon>
       {{ title }}
     </h1>
-    <div class="flex flex-col gap-2 items-center">
+    <div class="flex flex-col gap-2 items-center" v-if="userInfo">
       <n-avatar round size="small">
-        {{ userInfo.name.charAt(0) }}
+        {{ userInfo?.name?.charAt(0) }}
       </n-avatar>
 
-      <span class="text-sm text-gray-600">{{ userInfo.email }}</span>
+      <span class="text-sm text-gray-600">{{ userInfo?.email }}</span>
     </div>
   </div>
 </template>
