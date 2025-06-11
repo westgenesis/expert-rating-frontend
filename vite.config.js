@@ -14,7 +14,6 @@ import Components from 'unplugin-vue-components/vite'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
-  console.log('VITE_API_SERVER_URL:', env.VITE_API_SERVER_URL)
   return {
     plugins: [
       vue(),
