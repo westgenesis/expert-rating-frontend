@@ -40,5 +40,8 @@
     "vfonts": "^0.0.3",
     "vite": "^6.2.4",
     "vite-plugin-vue-devtools": "^7.7.2"
+  },
+  "volta": {
+    "node": "18.20.8"
   }
 }
