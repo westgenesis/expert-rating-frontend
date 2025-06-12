@@ -1,5 +1,5 @@
 <template>
-  <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme-overrides="themeOverrides" >
+  <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme-overrides="themeOverrides">
     <n-message-provider>
       <n-global-style />
       <RouterView />
@@ -16,7 +16,10 @@ import { NConfigProvider, zhCN, dateZhCN } from 'naive-ui'
    */
   const themeOverrides = {
     common: {
-      primaryColor: '#0C53FD'
+      primaryColor: '#0C53FD',
+      primaryColorHover: '#0038FF',
+      primaryColorPressed: '#0032E6',
+      primaryColorSuppl: '#E0E8FF',
     },
 
   }
