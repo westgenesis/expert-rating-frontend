@@ -15,7 +15,7 @@ const routes = [
         name: 'expert-rating',
         component: () => import('../views/expert-rating/index.vue'),
         meta: { title: '专家评测', icon: StarReview },
-        hideInMenu: true,
+        // hideInMenu: true,
         hideMenu: true,
       },
       {
