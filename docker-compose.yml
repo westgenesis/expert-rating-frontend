@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: expert-rating-frontend
     ports:
-      - '58099:80' # 本地 8080 → 容器 nginx 80
+      - '8099:80' # 本地 8099 → 容器 nginx 80
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     restart: always
