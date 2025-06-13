@@ -6,7 +6,9 @@
 
 <script setup lang="jsx">
 import { ref, onMounted } from 'vue'
-
+import { getTapAllScoreHistory } from '@/services/apis'
+import { format } from 'date-fns'
+import router from '@/router'
 const data = ref([
   // 评分时间 测试对象 客观得分 主观得分 综合得分 评分专家
   {
@@ -47,12 +49,19 @@ const columns = ref([
       return index + 1
     },
   },
-  { title: '评分时间', key: 'ratingTime', width: 150 },
-  { title: '测试对象', key: 'testObject', width: 150 },
-  { title: '客观得分', key: 'objectiveScore', width: 120 },
-  { title: '主观得分', key: 'subjectiveScore', width: 120 },
-  { title: '综合得分', key: 'overallScore', width: 120 },
-  { title: '评分专家', key: 'rater', width: 120 },
+  {
+    title: '评分时间',
+    key: '评分时间',
+    width: 150,
+    render(row) {
+      return row['评分时间'] ? format(new Date(row['评分时间']), 'yyyy-MM-dd HH:mm:ss') : ''
+    },
+  },
+  { title: '测试对象', key: '测试对象', width: 150 },
+  { title: '客观得分', key: '客观得分', width: 120 },
+  { title: '主观得分', key: '主观得分', width: 120 },
+  { title: '综合得分', key: '综合得分', width: 120 },
+  { title: '评分专家', key: '评分专家', width: 120 },
   {
     title: '操作',
     key: 'action',
@@ -68,14 +77,17 @@ const columns = ref([
 ])
 
 const handleView = (row) => {
-  // 模拟查看打分详情
-  console.log('查看打分详情:', row)
+  router.push({
+    name: 'rating-results',
+    query: {
+      name: row['测试对象'],
+    },
+  })
 }
 
 const getRatingHistory = async () => {
-  // 模拟获取历史打分记录
-  // 实际应用中可以调用API获取数据
-  console.log('获取历史打分记录')
+  const res = await getTapAllScoreHistory()
+  data.value = res.data || []
 }
 
 onMounted(() => {

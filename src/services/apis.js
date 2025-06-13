@@ -44,3 +44,8 @@ export const postTapSendScorePayload = (data) => {
 export const getTapReadScorePayload = (params) => {
   return get('/tpa/read_score_payload', params)
 }
+
+// 获取所有历史评价
+export const getTapAllScoreHistory = (params) => {
+  return get('/tpa/all_score_history', params)
+}
