@@ -15,12 +15,33 @@
 
 <script setup>
 import { ref } from 'vue'
+import { getTapSubmitScores } from '@/services/apis'
+import { useMessage } from 'naive-ui'
+
+const props = defineProps({
+  name: {
+    type: String,
+    default: '',
+  },
+})
+
+const emit = defineEmits(['submit'])
 
 const visible = ref(false)
+const message = useMessage()
 
-const handleSubmit = () => {
-  // TODO: 提交
+const handleSubmit = async () => {
   visible.value = false
+  await getTapSubmitScores({
+    name: props.name,
+  })
+    .then(() => {
+      message.success('确认评分成功')
+      emit('submit')
+    })
+    .catch((error) => {
+      message.error(`确认评分失败:${error.response.data?.detail}`)
+    })
 }
 
 const handleCancel = () => {

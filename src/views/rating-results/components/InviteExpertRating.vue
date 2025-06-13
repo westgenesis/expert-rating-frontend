@@ -58,11 +58,13 @@ import { useMessage } from 'naive-ui'
 import { getTapExpertsEmail, postTapAskExpertsReview } from '@/services/apis'
 
 const props = defineProps({
-  projectName: {
+  name: {
     type: String,
     default: '',
   },
 })
+
+const emit = defineEmits(['submit'])
 
 const message = useMessage()
 
@@ -108,11 +110,12 @@ const handleInvite = async () => {
 
   const { status } = await postTapAskExpertsReview({
     emails: selectedExperts.value.map((item) => item.email),
-    projectName: props.projectName,
+    testobject_name: props.name,
   })
 
   if (status === 200) {
     message.success('邀请专家评分成功')
+    emit('submit')
   }
 
   loading.value = false

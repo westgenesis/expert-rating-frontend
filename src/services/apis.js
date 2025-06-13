@@ -29,3 +29,8 @@ export const getTapExpertsEmail = (params) => {
 export const postTapAskExpertsReview = (data) => {
   return post('/tpa/ask_experts_review', data)
 }
+
+// 确认评分
+export const getTapSubmitScores = (params) => {
+  return get('/tpa/submit_scores', params)
+}
