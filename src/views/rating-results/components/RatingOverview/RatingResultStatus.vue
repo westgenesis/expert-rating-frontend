@@ -13,7 +13,7 @@
     <div>
       <dl class="text-gray-500">
         <dt class="font-bold mb-2">判定依据</dt>
-        <dd class="item leading-5 px-8" v-for="item in statusInfo.basis" :key="item">
+        <dd class="item leading-5 px-8" v-for="item in statusBasic" :key="item">
           {{ item }}
         </dd>
       </dl>
@@ -30,18 +30,20 @@ const props = defineProps({
     default: false,
     required: true,
   },
+  statusBasic: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const statusDescMap = [
   {
     status: true,
     desc: '测试通过',
-    basis: ['未发现A类缺陷', '高级用例执行通过率=100%', '综合评分>=90'],
   },
   {
     status: false,
     desc: '测试未通过',
-    basis: ['发现A类缺陷', '高级用例执行通过率<100%', '综合评分<90'],
   },
 ]
 

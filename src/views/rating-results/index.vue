@@ -1,23 +1,24 @@
 <template>
   <section>
     <RatingObjInfo :data="ratingObj" />
-    <RatingOverview />
+    <RatingOverview :data="result" />
 
     <div class="my-4 flex justify-between items-stretch gap-4">
-      <ExecutionStatistics class="flex-1/3" />
-      <DefectDistributionStatistics class="flex-2/3" />
+      <ExecutionStatistics :data="execData" class="flex-1/3" />
+      <DefectDistributionStatistics :data="defectDistributionData" class="flex-2/3" />
     </div>
 
-    <RatingHistory />
+    <RatingHistory :name="ratingObj.name" />
 
-    <div class="my-4 flex justify-end gap-2">
+    <div class="my-4 flex justify-end gap-2" v-if="!result?.['状态']">
       <ConfirmResult />
-      <InviteExpertRating />
+      <InviteExpertRating :projectName="ratingObj.name" />
     </div>
   </section>
 </template>
 
 <script setup>
+import { onMounted, ref, computed, watch } from 'vue'
 import RatingObjInfo from '@/views/expert-rating/components/RatingObjInfo.vue'
 import RatingOverview from './components/RatingOverview/index.vue'
 import ExecutionStatistics from '@/views/expert-rating/components/TestResult/ExecutionStatistics.vue'
@@ -29,8 +30,48 @@ import InviteExpertRating from './components/InviteExpertRating.vue'
 
 import useRatingObj from '@/hooks/useRatingObj'
 
+import { getTapGetByName } from '@/services/apis'
+
 const ratingObj = useRatingObj()
 defineOptions({
   name: 'RatingResults',
 })
+
+const loading = ref(false)
+
+const result = ref(null)
+
+const getResult = async () => {
+  if (!ratingObj.name) {
+    return
+  }
+  loading.value = true
+  console.log(ratingObj.name)
+  const response = await getTapGetByName({
+    name: ratingObj.name,
+  })
+  result.value = response?.data?.[0] || {}
+  loading.value = false
+}
+
+const execData = computed(() => {
+  const data = result.value?.['用例执行情况']
+  return data
+})
+
+const defectDistributionData = computed(() => {
+  const data = result.value?.['缺陷分布']
+  return data
+})
+
+onMounted(() => {
+  getResult()
+})
+
+watch(
+  () => ratingObj.name,
+  () => {
+    getResult()
+  },
+)
 </script>

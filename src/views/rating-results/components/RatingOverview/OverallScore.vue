@@ -70,7 +70,7 @@ const arrowPercent = computed(() => {
   const max = Math.max(...scores)
   const min = Math.min(...scores)
   const range = max - min
-  return ((props.score - min) / range) * 100
+  return Math.max(0, ((props.score - min) / range) * 100)
 })
 </script>
 

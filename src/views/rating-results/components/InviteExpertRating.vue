@@ -53,37 +53,20 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import { useMessage } from 'naive-ui'
+import { getTapExpertsEmail, postTapAskExpertsReview } from '@/services/apis'
+
+const props = defineProps({
+  projectName: {
+    type: String,
+    default: '',
+  },
+})
 
 const message = useMessage()
 
-const expertList = ref([
-  {
-    name: '张老师',
-    email: 'zhang@qq.com',
-  },
-  {
-    name: '李老师',
-    email: 'li@qq.com',
-  },
-  {
-    name: '王老师',
-    email: 'wang@qq.com',
-  },
-  {
-    name: '赵老师',
-    email: 'zhao@qq.com',
-  },
-  {
-    name: '钱老师',
-    email: 'qian@qq.com',
-  },
-  {
-    name: '孙老师',
-    email: 'sun@qq.com',
-  },
-])
+const expertList = ref()
 
 const selectedExperts = ref([])
 
@@ -92,6 +75,15 @@ const visible = ref(false)
 const loading = ref(false)
 
 const selectAll = ref(false)
+
+const getExpertList = async () => {
+  const { data } = await getTapExpertsEmail()
+  expertList.value = data
+}
+
+onMounted(() => {
+  getExpertList()
+})
 
 watch(selectedExperts, () => {
   selectAll.value = selectedExperts.value.length === expertList.value.length
@@ -111,12 +103,19 @@ const handleSelectAll = () => {
   }
 }
 
-const handleInvite = () => {
+const handleInvite = async () => {
   loading.value = true
-  setTimeout(() => {
+
+  const { status } = await postTapAskExpertsReview({
+    emails: selectedExperts.value.map((item) => item.email),
+    projectName: props.projectName,
+  })
+
+  if (status === 200) {
     message.success('邀请专家评分成功')
-    loading.value = false
-    visible.value = false
-  }, 2000)
+  }
+
+  loading.value = false
+  visible.value = false
 }
 </script>

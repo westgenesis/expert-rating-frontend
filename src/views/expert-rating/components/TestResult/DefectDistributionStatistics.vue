@@ -4,12 +4,14 @@
       <div class="flex gap-4">
         <div class="flex-1 shadow-sm p-4">
           <div class="text-md text-center font-semibold">缺陷严重程度分布</div>
-          <PieChart :data="data" />
+          <PieChart v-if="defectSeverityDistribution" :data="defectSeverityDistribution" />
+          <n-empty class="mt-6" v-else>暂无数据</n-empty>
         </div>
 
         <div class="flex-1 shadow-sm p-4">
-          <div class="text-md text-center font-semibold">缺陷严重程度分布</div>
-          <PieChart :data="data2" />
+          <div class="text-md text-center font-semibold">缺陷场景分布</div>
+          <PieChart v-if="defectSceneDistribution" :data="defectSceneDistribution" />
+          <n-empty class="mt-6" v-else>暂无数据</n-empty>
         </div>
       </div>
     </n-card>
@@ -17,22 +19,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import PieChart from '@/components/PieChart.vue'
-const data = ref({
-  致命: 62,
-  严重: 28,
-  一般: 32,
-  轻微: 28,
+
+const props = defineProps({
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 })
 
-const data2 = ref({
-  ACC切入: 62,
-  ACC切出: 62,
-  ACC跟车: 62,
-  ACC跟车加速: 62,
-  ACC跟车减速: 62,
-  ACC被动退出: 62,
-  ACC停车: 62,
+// 缺陷严重程度分布
+const defectSeverityDistribution = computed(() => {
+  return props.data?.['缺陷严重程度分布']
+})
+
+// 缺陷场景分布
+const defectSceneDistribution = computed(() => {
+  return props.data?.['缺陷场景分布']
 })
 </script>
