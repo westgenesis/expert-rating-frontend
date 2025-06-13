@@ -8,40 +8,13 @@
 import { ref, onMounted } from 'vue'
 import { getTapAllScoreHistory } from '@/services/apis'
 import { format } from 'date-fns'
-import router from '@/router'
-const data = ref([
-  // 评分时间 测试对象 客观得分 主观得分 综合得分 评分专家
-  {
-    id: 1,
-    ratingTime: '2023-10-01',
-    testObject: '对象A',
-    objectiveScore: 85,
-    subjectiveScore: 90,
-    overallScore: 87.5,
-    rater: '专家1',
-  },
-  {
-    id: 2,
-    ratingTime: '2023-10-02',
-    testObject: '对象B',
-    objectiveScore: 78,
-    subjectiveScore: 82,
-    overallScore: 80,
-    rater: '专家2',
-  },
-  {
-    id: 3,
-    ratingTime: '2023-10-03',
-    testObject: '对象C',
-    objectiveScore: 92,
-    subjectiveScore: 88,
-    overallScore: 90,
-    rater: '专家3',
-  },
-])
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const data = ref([])
 
 const columns = ref([
-  // 列： 序号 评分时间 测试对象 客观得分 主观得分 综合得分 评分专家 操作
   {
     title: '序号',
     width: 80,
@@ -77,12 +50,13 @@ const columns = ref([
 ])
 
 const handleView = (row) => {
-  router.push({
+  const url = router.resolve({
     name: 'rating-results',
     query: {
       name: row['测试对象'],
     },
-  })
+  }).href
+  window.open(url, '_blank')
 }
 
 const getRatingHistory = async () => {
