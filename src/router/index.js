@@ -1,15 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { StarReview, Settings } from '@vicons/carbon'
 
-
 const routes = [
   {
     path: '/',
     name: 'home',
     component: () => import('../components/Layout/index.vue'),
     meta: { title: '专家评测系统' },
-    redirect: '/expert-rating',
+    redirect: '/settings',
     children: [
+      {
+        path: 'settings',
+        name: 'settings',
+        component: () => import('../views/rating-settings/index.vue'),
+        meta: { title: '设置', icon: Settings },
+      },
       {
         path: 'expert-rating',
         name: 'expert-rating',
@@ -23,12 +28,6 @@ const routes = [
         name: 'rating-results',
         component: () => import('../views/rating-results/index.vue'),
         meta: { title: '评测结果', icon: StarReview },
-      },
-      {
-        path: 'settings',
-        name: 'settings',
-        component: () => import('../views/rating-settings/index.vue'),
-        meta: { title: '设置', icon: Settings },
       },
     ],
   },
