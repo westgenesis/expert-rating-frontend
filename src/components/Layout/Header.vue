@@ -6,13 +6,6 @@
       </n-icon>
       {{ title }}
     </h1>
-    <div class="flex flex-col gap-2 items-center" v-if="userInfo">
-      <n-avatar round size="small">
-        {{ userInfo?.name?.charAt(0) }}
-      </n-avatar>
-
-      <span class="text-sm text-gray-600">{{ userInfo?.email }}</span>
-    </div>
   </div>
 </template>
 
@@ -23,10 +16,9 @@ defineOptions({
 
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import useUser from '@/hooks/useUser'
-import { NAvatar, NIcon } from 'naive-ui'
 
-const { userInfo } = useUser()
+import { NIcon } from 'naive-ui'
+
 const route = useRoute()
 const title = computed(() => {
   return route.meta.title || '默认标题'
