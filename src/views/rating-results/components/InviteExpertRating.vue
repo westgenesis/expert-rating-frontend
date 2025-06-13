@@ -1,5 +1,5 @@
 <template>
-  <n-button type="primary" @click="visible = true">邀请专家评分</n-button>
+  <n-button type="primary" @click="handleInvite">邀请专家评分</n-button>
 
   <n-drawer v-model:show="visible" :width="600" placement="right">
     <n-drawer-content closable title="选择评分专家">
@@ -41,8 +41,8 @@
           <n-button
             type="primary"
             :loading="loading"
-            :disabled="!selectedExperts.length"
-            @click="handleInvite"
+            :disabled="!selectedExperts.length || props.status"
+            @click="handleInviteSubmit"
           >
             邀请
           </n-button>
@@ -61,6 +61,10 @@ const props = defineProps({
   name: {
     type: String,
     default: '',
+  },
+  status: {
+    type: Boolean,
+    default: false,
   },
 })
 
@@ -106,6 +110,14 @@ const handleSelectAll = () => {
 }
 
 const handleInvite = async () => {
+  if (props.status) {
+    message.warning('已确认评价结果，不可再邀请专家评分')
+    return
+  }
+  visible.value = true
+}
+
+const handleInviteSubmit = async () => {
   loading.value = true
 
   const { status } = await postTapAskExpertsReview({

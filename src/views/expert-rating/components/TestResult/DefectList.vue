@@ -10,7 +10,28 @@ import { ref } from 'vue'
 const data = ref([])
 const columns = ref([
   {
-    title: '缺陷编号',
+    title: '编号',
+    key: 'defectNumber',
+  },
+  {
+    title: '缺陷名称',
+    key: 'defectName',
+  },
+  {
+    title: '状态',
+    key: 'status',
+  },
+  {
+    title: '被测对象',
+    key: 'testedObject',
+  },
+  {
+    title: '最后修改时间',
+    key: 'lastModifiedTime',
+  },
+  {
+    title: '创建时间',
+    key: 'createTime',
   },
 ])
 </script>

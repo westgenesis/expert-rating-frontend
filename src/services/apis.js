@@ -34,3 +34,13 @@ export const postTapAskExpertsReview = (data) => {
 export const getTapSubmitScores = (params) => {
   return get('/tpa/submit_scores', params)
 }
+
+// 专家提交评分
+export const postTapSendScorePayload = (data) => {
+  return post('/tpa/send_score_payload', data)
+}
+
+// 获取专家评分
+export const getTapReadScorePayload = (params) => {
+  return get('/tpa/read_score_payload', params)
+}

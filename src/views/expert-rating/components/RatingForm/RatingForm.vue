@@ -1,8 +1,13 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <n-form :disabled="previewMode" ref="ratingMatrixFormRef" :model="ratingMatrixFormData">
+  <n-form
+    ref="formRef"
+    :disabled="previewMode || disabled"
+    :model="ratingMatrixFormData"
+    :rules="rules"
+  >
     <slot name="prefix"></slot>
-    <n-form-item class="-mt-8">
+    <n-form-item path="ratingData" class="-mt-8">
       <div class="flex overflow-x-auto">
         <div>
           <div
@@ -50,13 +55,48 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 defineProps({
   previewMode: {
+    type: Boolean,
+  },
+  disabled: {
     type: Boolean,
   },
   ratingMatrixFormData: {
     type: Object,
     required: true,
+  },
+})
+
+const formRef = ref(null)
+
+const rules = {
+  ratingData: {
+    required: true,
+    message: '请选择评分',
+    validator: (rule, value) => {
+      console.log(value)
+      if (value.some((item) => item.value === '')) {
+        return new Error('请选择评分')
+      }
+      return true
+    },
+  },
+  remark: {
+    required: true,
+    message: '请输入备注',
+    trigger: ['input', 'blur'],
+  },
+}
+
+defineExpose({
+  restoreValidation() {
+    return formRef.value.restoreValidation()
+  },
+  validate() {
+    return formRef.value.validate()
   },
 })
 </script>
