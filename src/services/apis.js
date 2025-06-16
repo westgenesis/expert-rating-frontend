@@ -49,3 +49,13 @@ export const getTapReadScorePayload = (params) => {
 export const getTapAllScoreHistory = (params) => {
   return get('/tpa/all_score_history', params)
 }
+
+// 获取测试用例列表
+export const getTapGetTestCaseLists = (params) => {
+  return get('/tpa/get_testcaselists', params)
+}
+
+// 获取缺陷列表
+export const getTapGetDefectLists = (params) => {
+  return get('/tpa/get_defect_lists', params)
+}

@@ -12,9 +12,9 @@
           <DefectDistributionStatistics class="flex-2/3" />
         </div>
 
-        <TestCaseList class="mb-2" />
+        <TestCaseList class="mb-2" :name="ratingObj?.name" :type="params.type" />
 
-        <DefectList />
+        <DefectList :name="ratingObj?.name" :type="params.type" />
       </div>
     </div>
   </section>
@@ -22,6 +22,9 @@
 
 <script setup>
 import { reactive } from 'vue'
+
+import useRatingObj from '@/hooks/useRatingObj'
+
 import TestSet from './TestSet.vue'
 import ExecutionStatistics from './ExecutionStatistics.vue'
 import DefectDistributionStatistics from './DefectDistributionStatistics.vue'
@@ -34,4 +37,6 @@ defineOptions({
 const params = reactive({
   type: '',
 })
+
+const ratingObj = useRatingObj()
 </script>
