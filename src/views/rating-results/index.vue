@@ -46,7 +46,6 @@ const getResult = async () => {
     return
   }
   loading.value = true
-  console.log(ratingObj.name)
   const response = await getTapGetByName({
     name: ratingObj.name,
   })

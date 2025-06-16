@@ -59,3 +59,8 @@ export const getTapGetTestCaseLists = (params) => {
 export const getTapGetDefectLists = (params) => {
   return get('/tpa/get_defect_lists', params)
 }
+
+// 获取测试集合
+export const getTapExpertRatingSets = (params) => {
+  return get('/tpa/expert_rating_sets', params)
+}

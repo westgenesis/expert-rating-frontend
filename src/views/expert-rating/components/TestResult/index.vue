@@ -5,23 +5,25 @@
     </n-h3>
 
     <div class="flex items-stretch h-[500px] gap-4">
-      <TestSet class="w-1/5" v-model="params.type" />
-      <div class="flex-1 overflow-auto">
-        <div class="mb-2 flex justify-between items-stretch gap-4">
-          <ExecutionStatistics class="flex-1/3" />
-          <DefectDistributionStatistics class="flex-2/3" />
-        </div>
+      <TestSet class="w-1/5" :name="ratingObj?.name" v-model="params.type" />
+      <div class="flex-1 overflow-x-hidden overflow-y-auto">
+        <n-spin :show="loading">
+          <div class="w-full overflow-hidden mb-2 flex justify-between items-stretch gap-4">
+            <ExecutionStatistics class="w-1/3" :data="execData" />
+            <DefectDistributionStatistics class="w-2/3" :data="defectDistributionData" />
+          </div>
 
-        <TestCaseList class="mb-2" :name="ratingObj?.name" :type="params.type" />
+          <TestCaseList class="mb-2" :name="ratingObj?.name" :type="params.type" />
 
-        <DefectList :name="ratingObj?.name" :type="params.type" />
+          <DefectList :name="ratingObj?.name" :type="params.type" />
+        </n-spin>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { ref, reactive, computed, watchEffect } from 'vue'
 
 import useRatingObj from '@/hooks/useRatingObj'
 
@@ -30,6 +32,9 @@ import ExecutionStatistics from './ExecutionStatistics.vue'
 import DefectDistributionStatistics from './DefectDistributionStatistics.vue'
 import TestCaseList from './TestCaseList.vue'
 import DefectList from './DefectList.vue'
+
+import { getTapGetByName } from '@/services/apis'
+
 defineOptions({
   name: 'TestResult',
 })
@@ -39,4 +44,35 @@ const params = reactive({
 })
 
 const ratingObj = useRatingObj()
+
+const loading = ref(false)
+
+const result = ref(null)
+
+const getResult = async () => {
+  if (!ratingObj.name) {
+    return
+  }
+  loading.value = true
+  const response = await getTapGetByName({
+    name: ratingObj.name,
+    type: params.type,
+  })
+  result.value = response?.data?.[0] || {}
+  loading.value = false
+}
+
+const execData = computed(() => {
+  const data = result.value?.['用例执行情况']
+  return data
+})
+
+const defectDistributionData = computed(() => {
+  const data = result.value?.['缺陷分布']
+  return data
+})
+
+watchEffect(() => {
+  getResult()
+})
 </script>

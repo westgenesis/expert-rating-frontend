@@ -1,7 +1,7 @@
 <template>
   <div>
     <n-card title="缺陷分布统计">
-      <div class="flex gap-4">
+      <div class="w-full overflow-hidden flex gap-4">
         <div class="flex-1 shadow-sm p-4">
           <div class="text-md text-center font-semibold">缺陷严重程度分布</div>
           <PieChart v-if="defectSeverityDistribution" :data="defectSeverityDistribution" />

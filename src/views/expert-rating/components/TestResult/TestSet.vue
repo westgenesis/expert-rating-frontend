@@ -15,15 +15,15 @@
       <div class="pl-4 flex flex-col gap-2">
         <div
           class="pointer px-4 py-2 rounded-sm text-sm cursor-pointer flex items-center gap-2 hover:bg-[#0c54fddb] hover:text-white transition-colors"
-          :class="{ 'bg-[#0C53FD] text-white': model === item.type }"
-          @click="handleClick(item.type)"
+          :class="{ 'bg-[#0C53FD] text-white': model === item.id }"
+          @click="handleClick(item.id)"
           v-for="(item, index) in data"
           :key="index"
         >
           <n-icon size="20">
             <Grid />
           </n-icon>
-          {{ item.name }} ({{ allCount }})
+          {{ item.name }} ({{ item.count }})
         </div>
       </div>
     </div>
@@ -35,41 +35,43 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Folder, Grid } from '@vicons/carbon'
+
+import { getTapExpertRatingSets } from '@/services/apis'
 
 defineOptions({
   name: 'TestSet',
 })
 
 const props = defineProps({
-  data: {
-    type: Array,
-    default: () => [
-      {
-        name: '车库测试集合',
-        count: 623,
-        type: 1,
-      },
-      {
-        name: '车库测试集合',
-        count: 623,
-        type: 2,
-      },
-      {
-        name: '车库测试集合',
-        count: 1623,
-        type: 3,
-      },
-    ],
+  name: {
+    type: String,
+    required: true,
   },
 })
 
+const data = ref([])
+
 const model = defineModel()
 
-const allCount = computed(() => props.data.reduce((total, item) => total + item.count, 0))
+const allCount = computed(() => data.value.reduce((total, item) => total + item.count, 0))
 
 const handleClick = (type) => {
   model.value = type
 }
+
+const getTestSet = async () => {
+  if (!props.name) {
+    return
+  }
+  const response = await getTapExpertRatingSets({
+    name: props.name,
+  })
+  data.value = response?.data || []
+}
+
+onMounted(() => {
+  getTestSet()
+})
 </script>
