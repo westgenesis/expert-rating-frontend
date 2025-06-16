@@ -47,6 +47,7 @@ router.beforeEach((to, from, next) => {
 
   // 如果路由query中有token，则将其存储到localStorage
   if (to.query.token) {
+    localStorage.clear() // 清空localStorage
     localStorage.setItem('token', to.query.token)
   }
   next()

@@ -64,3 +64,8 @@ export const getTapGetDefectLists = (params) => {
 export const getTapExpertRatingSets = (params) => {
   return get('/tpa/expert_rating_sets', params)
 }
+
+// 获取用户信息
+export const getTapExportInfo = (params) => {
+  return get('/tpa/export_info', params)
+}

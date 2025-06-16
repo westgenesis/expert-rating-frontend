@@ -6,10 +6,18 @@
       </n-icon>
       {{ title }}
     </h1>
+
+    <div class="flex flex-col items-center py-1" v-if="exportInfo">
+      <n-avatar round size="small">
+        {{ exportInfo?.name?.charAt(0) }}
+      </n-avatar>
+      <span class="text-sm text-gray-600">{{ exportInfo?.email }}</span>
+    </div>
   </div>
 </template>
 
 <script setup>
+import useExperInfo from '@/hooks/useExpertInfo'
 defineOptions({
   name: 'PageHeader',
 })
@@ -17,7 +25,7 @@ defineOptions({
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 
-import { NIcon } from 'naive-ui'
+const { exportInfo } = useExperInfo()
 
 const route = useRoute()
 const title = computed(() => {
