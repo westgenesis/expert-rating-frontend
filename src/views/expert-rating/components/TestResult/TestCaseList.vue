@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="jsx">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { getTapGetTestCaseLists } from '@/services/apis'
 
 const props = defineProps({
@@ -94,14 +94,14 @@ const getTestCaseList = async () => {
   loading.value = true
   const res = await getTapGetTestCaseLists({
     name: props.name,
-    // type: props.type,
+    type: props.type,
   })
 
   data.value = res.data || []
   loading.value = false
 }
 
-onMounted(() => {
+watchEffect(() => {
   getTestCaseList()
 })
 </script>

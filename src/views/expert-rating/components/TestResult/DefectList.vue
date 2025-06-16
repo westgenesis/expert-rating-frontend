@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 
 import { getTapGetDefectLists } from '@/services/apis'
 
@@ -122,7 +122,7 @@ const getDefectList = async () => {
   loading.value = false
 }
 
-onMounted(() => {
+watchEffect(() => {
   getDefectList()
 })
 </script>
