@@ -11,8 +11,8 @@
     <RatingHistory :name="ratingObj.name" />
 
     <div class="my-4 flex justify-end gap-2">
-      <ConfirmResult :name="ratingObj.name" :status="result?.['状态']" />
-      <InviteExpertRating :projectName="ratingObj.name" :status="result?.['状态']" />
+      <ConfirmResult :name="ratingObj.name" v-if="!result?.['状态']" />
+      <InviteExpertRating :projectName="ratingObj.name" v-if="!result?.['状态']" />
     </div>
   </section>
 </template>

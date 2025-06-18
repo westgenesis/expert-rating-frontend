@@ -62,10 +62,6 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  status: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const emit = defineEmits(['submit'])
@@ -110,10 +106,6 @@ const handleSelectAll = () => {
 }
 
 const handleInvite = async () => {
-  if (props.status) {
-    message.warning('已确认评价结果，不可再邀请专家评分')
-    return
-  }
   visible.value = true
 }
 

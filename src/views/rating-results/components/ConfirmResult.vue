@@ -23,10 +23,6 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  status: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const emit = defineEmits(['submit'])
@@ -35,10 +31,6 @@ const visible = ref(false)
 const message = useMessage()
 
 const handleSubmit = () => {
-  if (props.status) {
-    message.warning('已确认评价结果，不可更改')
-    return
-  }
   visible.value = true
 }
 
