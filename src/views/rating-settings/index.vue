@@ -1,12 +1,15 @@
 <template>
   <section class="flex flex-col gap-8">
-    <RatingMatrix />
+    <ExpertRatingMatrix />
+
+    <ObjectiveRatingMatrix />
+
     <RatingHistory />
   </section>
 </template>
 
 <script setup>
-import RatingMatrix from './components/RatingMatrix/index.vue'
+import { ExpertRatingMatrix, ObjectiveRatingMatrix } from './components/RatingMatrix'
 import RatingHistory from './components/RatingHistory.vue'
 defineOptions({
   name: 'RatingSettings',

@@ -1,5 +1,5 @@
 <template>
-  <n-card title="专家评分矩阵">
+  <n-card title="客观评分矩阵">
     <template #header-extra>
       <n-space>
         <n-button secondary type="primary" @click="handleAddDimension">
@@ -31,7 +31,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { Add } from '@vicons/carbon'
 import { useMessage } from 'naive-ui'
-import { getShowExpertRatingMatrix, updateExpertRatingMatrix } from '@/services/apis.js'
+import { getShowObjectiveRatingMatrix, updateObjectiveRatingMatrix } from '@/services/apis.js'
 
 import RatingMatrixForm from './RatingMatrixForm.vue'
 
@@ -48,22 +48,13 @@ const ratingMatrixFormData = ref({
 const ratingMatrixFormRef = ref(null)
 
 watch(ratingMatrix, (newValue) => {
-  // 更新表单数据
-  const data = newValue.map((item) => {
-    // 获取维度和配置对象
-    const [dimensionName, ratingConfig] = Object.entries(item)[0]
-
-    // 转换评分配置
-    const configs = Object.entries(ratingConfig).map(([name, value]) => ({
+  const data = Object.entries(newValue).map(([dimensionName, ratingConfig]) => ({
+    dimensionName,
+    configs: Object.entries(ratingConfig).map(([name, value]) => ({
       name,
       value,
-    }))
-
-    return {
-      dimensionName,
-      configs,
-    }
-  })
+    })),
+  }))
 
   ratingMatrixFormData.value = { data }
 })
@@ -71,8 +62,8 @@ watch(ratingMatrix, (newValue) => {
 const getRatingMatrix = async () => {
   try {
     loading.value = true
-    const response = await getShowExpertRatingMatrix()
-    ratingMatrix.value = response?.data?.expert_rating_matrix || []
+    const response = await getShowObjectiveRatingMatrix()
+    ratingMatrix.value = response?.data?.objective_rating_matrix || []
     // 处理获取到的数据
   } catch (error) {
     console.error('获取评分矩阵失败:', error)
@@ -97,19 +88,17 @@ const handleRemoveDimension = (index) => {
 
 const submitting = ref(false)
 const handleSubmit = () => {
-  console.log('表单验证', ratingMatrixFormRef.value.validate)
-
   ratingMatrixFormRef.value.validate().then(() => {
     submitting.value = true
-    const updatedMatrix = ratingMatrixFormData.value.data.map((item) => {
-      const configs = item.configs.reduce((acc, config) => {
+    const updatedMatrix = ratingMatrixFormData.value.data.reduce((acc, item) => {
+      acc[item.dimensionName] = item.configs.reduce((acc, config) => {
         acc[config.name] = config.value
         return acc
       }, {})
-      return { [item.dimensionName]: configs }
-    })
+      return acc
+    }, {})
 
-    updateExpertRatingMatrix({ expert_rating_matrix: updatedMatrix })
+    updateObjectiveRatingMatrix({ objective_rating_matrix: updatedMatrix })
       .then((data) => {
         if (data?.data?.status === '成功') {
           message.success('评分矩阵更新成功')

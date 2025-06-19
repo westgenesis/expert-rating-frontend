@@ -10,6 +10,16 @@ export const updateExpertRatingMatrix = (data) => {
   return patch('/admin/update_expert_rating_matrix', data)
 }
 
+// 获取客观评分矩阵
+export const getShowObjectiveRatingMatrix = (params) => {
+  return get('/admin/show_objective_rating_matrix', params)
+}
+
+// 更新客观评分矩阵
+export const updateObjectiveRatingMatrix = (data) => {
+  return patch('/admin/update_objective_rating_matrix', data)
+}
+
 // 获取评测结果
 export const getTapGetByName = (params) => {
   return get('/tpa/get_by_name', params)
