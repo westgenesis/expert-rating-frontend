@@ -10,7 +10,7 @@
       class="h-full flex flex-col items-center justify-center py-2 px-4 min-w-[180px] border-l border-white text-lg"
     >
       <div>{{ title }}</div>
-      <div class="font-semibold text-2xl mt-2">{{ value }}</div>
+      <div class="font-semibold text-2xl mt-2">{{ value ? value.toFixed(2) : '--' }}</div>
     </div>
   </div>
 </template>

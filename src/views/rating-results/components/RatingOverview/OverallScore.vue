@@ -12,7 +12,7 @@
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <div class="text-center text-lg font-bold text-slate-700">综合得分</div>
       <div class="text-center text-2xl font-bold mt-2" :style="{ color: scoreColor }">
-        {{ score }}
+        {{ score ? score.toFixed(2) : '--' }}
       </div>
     </div>
 

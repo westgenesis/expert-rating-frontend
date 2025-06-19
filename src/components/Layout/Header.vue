@@ -7,6 +7,10 @@
       {{ title }}
     </h1>
 
+    <div style="width: 60%">
+      <TestObjSelect />
+    </div>
+
     <div class="flex flex-col items-center py-1" v-if="exportInfo">
       <n-avatar round size="small">
         {{ exportInfo?.name?.charAt(0) }}
@@ -18,6 +22,8 @@
 
 <script setup>
 import useExperInfo from '@/hooks/useExpertInfo'
+import TestObjSelect from '../TestObjSelect.vue'
+
 defineOptions({
   name: 'PageHeader',
 })
