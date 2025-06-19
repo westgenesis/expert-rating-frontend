@@ -15,6 +15,9 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  getItemStyle: {
+    type: Function,
+  },
   option: {
     type: Object,
     default: () => ({}),
@@ -53,6 +56,7 @@ const baseOption = computed(() => {
           return {
             name: key,
             value: props.data[key],
+            itemStyle: props.getItemStyle ? props.getItemStyle(key, props.data[key]) : {},
           }
         }),
         emphasis: {
