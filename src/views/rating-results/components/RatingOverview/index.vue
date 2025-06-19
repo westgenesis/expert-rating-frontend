@@ -1,8 +1,12 @@
 <template>
   <n-card size="small" title="评价概况">
     <template #header-extra>
-      <n-tag class="!text-lg" :bordered="false" :type="data?.['状态'] ? 'success' : 'warning'">
-        {{ data?.['状态'] ? '已确认' : '未确认' }}
+      <n-tag
+        class="!text-lg"
+        :bordered="false"
+        :type="data?.['主观确认状态'] ? 'success' : 'warning'"
+      >
+        {{ data?.['主观确认状态'] ? '已确认' : '未确认' }}
       </n-tag>
     </template>
     <div class="p-4 flex justify-between items-center gap-4 h-[200px]">
