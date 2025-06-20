@@ -88,6 +88,8 @@ const handleAddDimension = () => {
     configs: [{ name: '', value: '' }],
   }
   ratingMatrixFormData.value.data.push(newDimension)
+
+  ratingMatrixFormRef.value.scrollToBottom()
 }
 
 const handleRemoveDimension = (index) => {

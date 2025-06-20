@@ -35,6 +35,11 @@ export const getTapExpertsEmail = (params) => {
   return get('/tpa/get_experts_email', params)
 }
 
+// 更新专家列表
+export const updateExpertsEmail = (data) => {
+  return patch('/admin/update_experts', data)
+}
+
 // 邀请专家评分
 export const postTapAskExpertsReview = (data) => {
   return post('/tpa/ask_experts_review', data)

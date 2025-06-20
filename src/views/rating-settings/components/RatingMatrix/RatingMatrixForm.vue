@@ -1,16 +1,24 @@
 <template>
   <n-form inline ref="formRef">
-    <n-data-table :columns="columns" :data="$attrs.model.data" :bordered="false" />
+    <n-data-table
+      ref="tableRef"
+      :columns="columns"
+      :data="$attrs.model.data"
+      size="small"
+      :bordered="false"
+      :max-height="400"
+    />
   </n-form>
 </template>
 
 <script setup lang="jsx">
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { Delete } from '@vicons/carbon'
 import RatingMatrixValuesConfig from './RatingMatrixValuesConfig.vue'
 const emit = defineEmits(['remove'])
 
 const formRef = ref(null)
+const tableRef = ref(null)
 
 const columns = ref([
   {
@@ -34,8 +42,12 @@ const columns = ref([
     },
   },
   {
-    title(){
-      return <div>分值设置 <span className="title-desc">设置分数等级和分值</span></div>
+    title() {
+      return (
+        <div>
+          分值设置 <span className="title-desc">设置分数等级和分值</span>
+        </div>
+      )
     },
     key: 'configs',
 
@@ -67,13 +79,23 @@ const columns = ref([
   },
 ])
 
+const scrollToBottom = () => {
+  nextTick(() => {
+    // 滚动到底部
+    tableRef.value.scrollTo({
+      top: tableRef.value.$el.querySelector('tbody').scrollHeight,
+      behavior: 'smooth',
+    })
+  })
+}
+
 defineExpose({
+  scrollToBottom,
   validate(...args) {
     return formRef.value.validate(...args)
   },
 })
 </script>
-
 
 <style>
 .title-desc {
