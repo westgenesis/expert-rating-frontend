@@ -77,7 +77,7 @@ export const getTapExpertRatingSets = (params) => {
 
 // 获取用户信息
 export const getTapExportInfo = (params) => {
-  return get('/tpa/export_info', params)
+  return get('/tpa/expert_info', params)
 }
 
 // 获取测试用例ID列表

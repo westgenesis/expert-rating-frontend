@@ -12,7 +12,7 @@
         </n-radio-group>
 
         <PieChart
-          v-if="filterData"
+          v-if="filterData && !!Object.keys(filterData).length"
           :data="filterData"
           :option="{ series: [{ center: ['40%', '55%'] }] }"
           :getItemStyle="getItemStyle"

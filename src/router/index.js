@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { StarReview, Settings } from '@vicons/carbon'
-
+import useExperInfo from '@/hooks/useExpertInfo'
 const routes = [
   {
     path: '/',
@@ -39,7 +39,7 @@ const router = createRouter({
 })
 
 // 设置路由元信息，动态修改页面标题
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // 如果路由有meta.title，则设置页面标题
   if (to.meta?.title) {
     document.title = to.meta.title
@@ -49,6 +49,11 @@ router.beforeEach((to, from, next) => {
   if (to.query.token) {
     localStorage.clear() // 清空localStorage
     localStorage.setItem('token', to.query.token)
+  }
+
+  const { getExportInfo, exportInfo } = useExperInfo()
+  if (!exportInfo.value) {
+    await getExportInfo()
   }
   next()
 })

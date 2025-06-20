@@ -1,4 +1,4 @@
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { getTapExportInfo } from '@/services/apis'
 
 const useExperInfo = () => {
@@ -17,13 +17,10 @@ const useExperInfo = () => {
     localStorage.setItem('expertInfo', JSON.stringify(res.data))
   }
 
-  onMounted(() => {
-    if (!exportInfo.value) {
-      getExportInfo()
-    }
-  })
+  getExportInfo
 
   return {
+    getExportInfo,
     exportInfo, // 推荐返回解构对象，自动暴露 .value
   }
 }

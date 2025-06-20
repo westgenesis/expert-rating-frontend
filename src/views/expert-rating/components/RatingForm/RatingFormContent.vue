@@ -129,6 +129,7 @@ const handleSubmit = async () => {
   })
     .then(() => {
       message.success('提交评分成功')
+      hasHistoryData.value = true
     })
     .catch((error) => {
       console.error('提交评分失败:', error)

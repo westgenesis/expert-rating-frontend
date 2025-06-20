@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="relative flex justify-center -mt-8 w-fit">
+    <div class="relative flex justify-center -mt-8 w-4/5">
       <div
         class="arrow absolute top-0 -translate-x-1/2 -translate-y-full -mt-1"
         :style="{
@@ -25,7 +25,7 @@
         }"
       ></div>
       <div
-        class="w-8 h-2"
+        class="w-1/5 h-2"
         v-for="(item, index) in [...SCORE_COLORS].reverse()"
         :key="index"
         :style="{ background: item.color }"
@@ -68,7 +68,7 @@ const scoreColor = computed(() => {
 const arrowPercent = computed(() => {
   const scores = SCORE_COLORS.map((item) => item.score)
   const max = Math.max(...scores)
-  const min = Math.min(...scores)
+  const min = Math.min(...scores) - 10
   const range = max - min
   return Math.max(0, ((props.score - min) / range) * 100)
 })

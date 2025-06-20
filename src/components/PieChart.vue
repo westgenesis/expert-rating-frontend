@@ -53,10 +53,13 @@ const baseOption = computed(() => {
         radius: '90%',
         center: ['30%', '50%'],
         data: Object.keys(props.data).map((key) => {
+          const value = props.data[key]
           return {
             name: key,
-            value: props.data[key],
-            itemStyle: props.getItemStyle ? props.getItemStyle(key, props.data[key]) : {},
+            value,
+            itemStyle: props.getItemStyle ? props.getItemStyle(key, value) : {},
+            label: { show: value !== 0 },
+            labelLine: { show: value !== 0 },
           }
         }),
         emphasis: {
@@ -74,7 +77,7 @@ const baseOption = computed(() => {
         label: {
           show: true,
           position: 'inside', // 图形内部
-          formatter: '{d}%', // 显示百分比，可换成 `{b}: {c}` 显示名称+数值
+          formatter: '{b}({d}%)', // 显示百分比，可换成 `{b}: {c}` 显示名称+数值
         },
       },
     ],
