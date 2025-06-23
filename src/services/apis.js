@@ -89,3 +89,13 @@ export const getTapExportInfo = (params) => {
 export const getTapTestCaseIds = (params) => {
   return get('/tpa/testcase_ids', params)
 }
+
+// 设置评分系数
+export const postTapUpdateZongheSettings = (data) => {
+  return patch('/admin/update_zonghe_settings', data)
+}
+
+// 获取评分系数（单个）
+export const getTapGetZongheSettings = (params) => {
+  return get('/admin/get_zonghe_settings', params)
+}
