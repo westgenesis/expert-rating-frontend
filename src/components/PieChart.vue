@@ -36,6 +36,8 @@ const baseOption = computed(() => {
       itemHeight: 10,
       itemGap: 20,
       textStyle: {
+        width: 100,
+        overflow: 'truncate',
         fontSize: 12,
         color: '#333',
       },
@@ -44,7 +46,12 @@ const baseOption = computed(() => {
         const item = Object.entries(props.data).find(([key]) => key === name)
         if (!item) return name
         const [label, value] = item
-        return `${label} (${value})`
+        const text = `${label} (${value})`
+        const max = 10
+        return text.length > max ? text.slice(0, max) + '...' : text
+      },
+      tooltip: {
+        show: true,
       },
     },
     series: [
@@ -77,10 +84,14 @@ const baseOption = computed(() => {
         label: {
           show: true,
           position: 'inside', // 图形内部
-          formatter: '{b}({d}%)', // 显示百分比，可换成 `{b}: {c}` 显示名称+数值
+          formatter: '{d}%', // 显示百分比，可换成 `{b}: {c}` 显示名称+数值
         },
       },
     ],
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} ({d}%)',
+    },
   }
 })
 
