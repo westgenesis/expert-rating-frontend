@@ -75,11 +75,6 @@ export const getTapGetDefectLists = (params) => {
   return get('/tpa/get_defect_lists', params)
 }
 
-// 获取测试集合
-export const getTapExpertRatingSets = (params) => {
-  return get('/tpa/expert_rating_sets', params)
-}
-
 // 获取用户信息
 export const getTapExportInfo = (params) => {
   return get('/tpa/expert_info', params)
@@ -98,4 +93,9 @@ export const postTapUpdateZongheSettings = (data) => {
 // 获取评分系数（单个）
 export const getTapGetZongheSettings = (params) => {
   return get('/admin/get_zonghe_settings', params)
+}
+
+// 获取测试用例详情
+export const getTapGetTestCaseDetail = (params) => {
+  return get('/tpa/get_by_testsuite_id', params)
 }

@@ -142,7 +142,6 @@ const getScore = async () => {
     name: ratingObj.name,
   })
     .then((res) => {
-      console.log(res)
       if (res.data && res.data.payload) {
         hasHistoryData.value = true
         ratingMatrixFormData.value = res.data?.payload.data
