@@ -20,11 +20,6 @@ export const updateObjectiveRatingMatrix = (data) => {
   return patch('/admin/update_objective_rating_matrix', data)
 }
 
-// 获取评测结果
-export const getTapGetByName = (params) => {
-  return get('/tpa/get_by_name', params)
-}
-
 // 获取专家评分历史
 export const getTapScoreHistory = (params) => {
   return get('/tpa/score_history', params)
@@ -80,11 +75,6 @@ export const getTapExportInfo = (params) => {
   return get('/tpa/expert_info', params)
 }
 
-// 获取测试用例ID列表
-export const getTapTestCaseIds = (params) => {
-  return get('/tpa/testcase_ids', params)
-}
-
 // 设置评分系数
 export const postTapUpdateZongheSettings = (data) => {
   return patch('/admin/update_zonghe_settings', data)
@@ -97,5 +87,10 @@ export const getTapGetZongheSettings = (params) => {
 
 // 获取测试用例详情
 export const getTapGetTestCaseDetail = (params) => {
-  return get('/tpa/get_by_testsuite_id', params)
+  return get('/tpa/get_testset_testsuite_by_name_id', params)
+}
+
+// 获取测试集列表
+export const getTapGetTestsetByName = (params) => {
+  return get('/tpa/get_testset_by_name', params)
 }

@@ -30,7 +30,7 @@ import InviteExpertRating from './components/InviteExpertRating.vue'
 
 import useRatingObj from '@/hooks/useRatingObj'
 
-import { getTapGetByName } from '@/services/apis'
+import { getTapGetTestsetByName } from '@/services/apis'
 
 const ratingObj = useRatingObj()
 defineOptions({
@@ -46,7 +46,7 @@ const getResult = async () => {
     return
   }
   loading.value = true
-  const response = await getTapGetByName({
+  const response = await getTapGetTestsetByName({
     name: ratingObj.name,
   })
   result.value = response?.data?.[0] || {}

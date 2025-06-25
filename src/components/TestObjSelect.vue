@@ -3,16 +3,15 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { getTapTestCaseIds } from '@/services/apis'
 const router = useRouter()
 const route = useRoute()
 const options = ref([])
 const selectedValue = ref('')
 
 const getTestCaseList = async () => {
-  const res = await getTapTestCaseIds()
+  const res = { data: [] }
 
   options.value = (res.data || []).map((item) => ({
     label: item['测试对象'],

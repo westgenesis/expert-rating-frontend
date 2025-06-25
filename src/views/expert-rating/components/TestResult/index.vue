@@ -33,7 +33,7 @@ import DefectDistributionStatistics from './DefectDistributionStatistics.vue'
 import TestCaseList from './TestCaseList.vue'
 import DefectList from './DefectList.vue'
 
-import { getTapGetByName, getTapGetTestCaseDetail } from '@/services/apis'
+import { getTapGetTestsetByName, getTapGetTestCaseDetail } from '@/services/apis'
 
 defineOptions({
   name: 'TestResult',
@@ -55,19 +55,19 @@ const getResult = async () => {
   }
   loading.value = true
 
-  let service = params.type === '' ? getTapGetByName : getTapGetTestCaseDetail
-  let query =
-    params.type === ''
-      ? {
-          name: ratingObj.name,
-        }
-      : {
-          testsuite_id: params.type,
-          name: ratingObj.name,
-        }
+  if (params.type === '') {
+    const response = await getTapGetTestsetByName({
+      name: ratingObj.name,
+    })
+    result.value = response?.data?.[0] || {}
+  } else {
+    const response = await getTapGetTestCaseDetail({
+      testsuite_id: params.type,
+      name: ratingObj.name,
+    })
+    result.value = response?.data || {}
+  }
 
-  const response = await service(query)
-  result.value = response?.data?.[0] || {}
   loading.value = false
 }
 
