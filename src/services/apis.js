@@ -94,3 +94,8 @@ export const getTapGetTestCaseDetail = (params) => {
 export const getTapGetTestsetByName = (params) => {
   return get('/tpa/get_testset_by_name', params)
 }
+
+// 测试对象列表
+export const getTapGetTestObjList = (params) => {
+  return get('/tpa/testcase_selector', params)
+}
