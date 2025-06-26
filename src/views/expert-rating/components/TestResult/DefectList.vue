@@ -22,54 +22,41 @@ const props = defineProps({
 
 const data = ref([])
 const columns = ref([
-  // {
-  //   title: '编号',
-  //   key: 'defectNumber',
-  // },
   {
     title: '缺陷名称',
-    // key: 'defectName',
-    key: '缺陷名称',
+    key: 'title',
     width: 200,
     ellipsis: {
       tooltip: true,
     },
   },
   {
-    title: '状态',
-    key: '状态',
-    width: 100,
-  },
-  {
     title: '严重程度',
-    key: '严重程度',
+    key: 'severity',
     width: 80,
   },
   {
     title: '发生频率',
-    key: '发生频率',
+    key: 'frequency',
     width: 80,
   },
 
   {
-    title: '描述信息',
-    key: '描述信息',
+    title: '重现步骤',
+    key: 'reproduction_steps',
     width: 100,
     ellipsis: {
       tooltip: true,
     },
   },
   {
-    title: '解决方案',
-    key: '解决方案',
+    title: '所属模块',
+    key: 'module',
     width: 100,
-    ellipsis: {
-      tooltip: true,
-    },
   },
   {
-    title: '问题原因',
-    key: '问题原因',
+    title: '缺陷场景',
+    key: 'defect_scenario',
     width: 100,
     ellipsis: {
       tooltip: true,
@@ -83,28 +70,7 @@ const showData = computed(() => {
   }
 
   const flattenTestData = (data) => {
-    const result = []
-
-    data.forEach((item) => {
-      const nameMap = item['*缺陷名称'] || {}
-
-      // 获取所有 ID，并按数值排序
-      const keys = Object.keys(nameMap).sort((a, b) => Number(a) - Number(b))
-
-      keys.forEach((key) => {
-        result.push({
-          严重程度: item['*严重程度'][key] || '',
-          状态: item['*状态'][key] || '',
-          缺陷名称: nameMap[key] || '',
-          发生频率: item['发生频率'][key] || '',
-          描述信息: item['描述信息'][key] || '',
-          解决方案: item['解决方案'][key] || '',
-          问题原因: item['问题原因'][key] || '',
-        })
-      })
-    })
-
-    return result
+    return data.reduce((list, item) => [...list, ...(item?.defect_info || [])], [])
   }
 
   return flattenTestData(data.value)
@@ -116,7 +82,7 @@ const getDefectList = async () => {
   loading.value = true
   const res = await getTapGetDefectLists({
     name: props.name,
-    type: props.type,
+    testsuite_id: props.type || undefined,
   })
   data.value = res.data || []
   loading.value = false

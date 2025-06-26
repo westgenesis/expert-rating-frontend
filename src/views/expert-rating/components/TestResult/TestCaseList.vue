@@ -23,36 +23,57 @@ const data = ref([])
 const columns = ref([
   {
     title: '用例编号',
-    // key: 'testcaseNumber',
-    key: '用例编号',
+    key: 'id',
   },
   {
     title: '用例名称',
-    // key: 'testcaseName',
-    key: '用例名称',
+    key: 'testcase_name',
   },
   {
-    title: '测试类型',
-    key: '测试类型',
-    // render: (row) => {
-    //   if (!row.testType) {
-    //     return
-    //   }
+    title: '所属模块',
+    key: 'module',
+    width: 100,
+  },
+  {
+    title: '前置条件',
+    key: 'preconditions',
+    render: (row) => {
+      return <n-ellipsis>{row.preconditions?.join(' ')}</n-ellipsis>
+    },
+  },
+  // {
+  //   title: '测试类型',
+  //   key: '测试类型',
+  //   render: (row) => {
+  //     if (!row.testType) {
+  //       return
+  //     }
 
-    //   const testMap = {
-    //     1: '自动测试',
-    //     2: '手动测试',
-    //   }
+  //     const testMap = {
+  //       1: '自动测试',
+  //       2: '手动测试',
+  //     }
 
-    //   return (
-    //     <n-tag type="success">
-    //       {row.testType
-    //         .split(',')
-    //         .map((item) => testMap[item])
-    //         .join('&')}
-    //     </n-tag>
-    //   )
-    // },
+  //     return (
+  //       <n-tag type="success">
+  //         {row.testType
+  //           .split(',')
+  //           .map((item) => testMap[item])
+  //           .join('&')}
+  //       </n-tag>
+  //     )
+  //   },
+  // },
+  {
+    title: '测试优先级',
+    key: 'priority',
+  },
+  {
+    title: '测试描述',
+    key: 'description',
+    render: (row) => {
+      return <n-ellipsis>{row.description}</n-ellipsis>
+    },
   },
 ])
 
@@ -62,28 +83,7 @@ const showData = computed(() => {
   }
 
   const flattenTestData = (data) => {
-    const result = []
-
-    data.forEach((item) => {
-      const testObject = item['测试对象']
-      const typeMap = item['测试类型'] || {}
-      const nameMap = item['用例名称'] || {}
-      const idMap = item['用例编号'] || {}
-
-      // 获取所有 ID，并按数值排序
-      const keys = Object.keys(idMap).sort((a, b) => Number(a) - Number(b))
-
-      keys.forEach((key) => {
-        result.push({
-          测试对象: testObject,
-          测试类型: typeMap[key] || '',
-          用例名称: nameMap[key] || '',
-          用例编号: idMap[key] || '',
-        })
-      })
-    })
-
-    return result
+    return data.reduce((list, item) => [...list, ...(item?.testcase_list || [])], [])
   }
 
   return flattenTestData(data.value)
@@ -94,7 +94,7 @@ const getTestCaseList = async () => {
   loading.value = true
   const res = await getTapGetTestCaseLists({
     name: props.name,
-    type: props.type,
+    testsuite_id: props.type || undefined,
   })
 
   data.value = res.data || []
