@@ -4,8 +4,8 @@
       <n-text> 测试结果 </n-text>
     </n-h3>
 
-    <div class="flex items-stretch h-[500px] gap-4">
-      <TestSet class="w-1/5" :name="ratingObj?.name" v-model="params.type" />
+    <div class="flex items-stretch gap-4">
+      <TestSet class="w-1/5 max-h-[600px]" :name="ratingObj?.name" v-model="params.type" />
       <div class="flex-1 overflow-x-hidden overflow-y-auto">
         <n-spin :show="loading">
           <div class="w-full overflow-hidden mb-2 flex justify-between items-stretch gap-4">
