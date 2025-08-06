@@ -99,3 +99,8 @@ export const getTapGetTestsetByName = (params) => {
 export const getTapGetTestObjList = (params) => {
   return get('/tpa/testcase_selector', params)
 }
+
+// 获取模型推荐评分
+export const getAlearnRecommend = (params) => {
+  return get('/alearn/recommend', params)
+}

@@ -27,6 +27,13 @@ import {
 } from '@/services/apis.js'
 import useRatingObj from '@/hooks/useRatingObj'
 
+const props = defineProps({
+  recommendData: {
+    type: Object,
+    default: () => ({}),
+  },
+})
+
 const ratingObj = useRatingObj()
 
 const message = useMessage()
@@ -69,6 +76,17 @@ watch(ratingMatrixSerialized, (newValue) => {
     }
   })
 })
+
+watch(
+  () => props.recommendData,
+  () => {
+    if (props.recommendData) {
+      ratingMatrixFormData.value.ratingData.forEach((item) => {
+        item.value = Number(props.recommendData[item.dimensionName]) || ''
+      })
+    }
+  },
+)
 
 const getConfigLoading = ref(false)
 
