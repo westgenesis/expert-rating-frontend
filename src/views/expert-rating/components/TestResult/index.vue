@@ -5,7 +5,7 @@
     </n-h3>
 
     <div class="flex items-stretch gap-4">
-      <TestSet class="w-1/5 max-h-[600px]" :name="ratingObj?.name" v-model="params.type" />
+      <TestSet class="w-1/5 max-h-[600px]" :dataId="ratingObj?.dataId" v-model="params.type" />
       <div class="flex-1 overflow-x-hidden overflow-y-auto">
         <n-spin :show="loading">
           <div class="w-full overflow-hidden mb-2 flex justify-between items-stretch gap-4">
@@ -13,9 +13,9 @@
             <DefectDistributionStatistics class="w-2/3" :data="defectDistributionData" />
           </div>
 
-          <TestCaseList class="mb-2" :name="ratingObj?.name" :type="params.type" />
+          <TestCaseList class="mb-2" :dataId="ratingObj?.dataId" :type="params.type" />
 
-          <DefectList :name="ratingObj?.name" :type="params.type" />
+          <DefectList :dataId="ratingObj?.dataId" :type="params.type" />
         </n-spin>
       </div>
     </div>
@@ -33,7 +33,7 @@ import DefectDistributionStatistics from './DefectDistributionStatistics.vue'
 import TestCaseList from './TestCaseList.vue'
 import DefectList from './DefectList.vue'
 
-import { getTapGetTestsetByName, getTapGetTestCaseDetail } from '@/services/apis'
+import { getTapGetTestsetByDataId, getTapGetTestCaseDetail } from '@/services/apis'
 
 defineOptions({
   name: 'TestResult',
@@ -50,20 +50,20 @@ const loading = ref(false)
 const result = ref(null)
 
 const getResult = async () => {
-  if (!ratingObj.name) {
+  if (!ratingObj.dataId) {
     return
   }
   loading.value = true
 
   if (params.type === '') {
-    const response = await getTapGetTestsetByName({
-      name: ratingObj.name,
+    const response = await getTapGetTestsetByDataId({
+      data_id: ratingObj.dataId,
     })
     result.value = response?.data?.[0] || {}
   } else {
     const response = await getTapGetTestCaseDetail({
       testsuite_id: params.type,
-      name: ratingObj.name,
+      data_id: ratingObj.dataId,
     })
     result.value = response?.data || {}
   }

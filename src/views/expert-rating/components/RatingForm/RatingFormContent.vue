@@ -119,7 +119,7 @@ const handleReset = () => {
 
 const handleSave = async () => {
   await postTapSendScorePayload({
-    name: ratingObj.name,
+    data_id: ratingObj.dataId,
     payload: {
       data: ratingMatrixFormData.value,
       isTemp: true,
@@ -139,7 +139,7 @@ const handleSubmit = async () => {
     return
   }
   await postTapSendScorePayload({
-    name: ratingObj.name,
+    data_id: ratingObj.dataId,
     payload: {
       data: ratingMatrixFormData.value,
       isTemp: false,
@@ -157,7 +157,7 @@ const handleSubmit = async () => {
 
 const getScore = async () => {
   await getTapReadScorePayload({
-    name: ratingObj.name,
+    data_id: ratingObj.dataId,
   })
     .then((res) => {
       if (res.data && res.data.payload) {

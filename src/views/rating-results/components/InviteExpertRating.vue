@@ -58,7 +58,7 @@ import { useMessage } from 'naive-ui'
 import { getTapExpertsEmail, postTapAskExpertsReview } from '@/services/apis'
 
 const props = defineProps({
-  name: {
+  dataId: {
     type: String,
     default: '',
   },
@@ -114,7 +114,7 @@ const handleInviteSubmit = async () => {
 
   const { status } = await postTapAskExpertsReview({
     emails: selectedExperts.value.map((item) => item.email),
-    testobject_name: props.name,
+    testobject_id: props.dataId,
   })
 
   if (status === 200) {

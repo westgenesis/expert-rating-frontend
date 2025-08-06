@@ -41,14 +41,14 @@
 import { ref, computed, onMounted } from 'vue'
 import { Folder, Grid } from '@vicons/carbon'
 
-import { getTapGetTestsetByName } from '@/services/apis'
+import { getTapGetTestsetByDataId } from '@/services/apis'
 
 defineOptions({
   name: 'TestSet',
 })
 
 const props = defineProps({
-  name: {
+  dataId: {
     type: String,
     required: true,
   },
@@ -65,11 +65,11 @@ const handleClick = (type) => {
 }
 
 const getTestSet = async () => {
-  if (!props.name) {
+  if (!props.dataId) {
     return
   }
-  const response = await getTapGetTestsetByName({
-    name: props.name,
+  const response = await getTapGetTestsetByDataId({
+    data_id: props.dataId,
   })
   const testSet = response?.data?.[0]?.['用例组'] || {}
   data.value = Object.keys(testSet).map((key) => ({

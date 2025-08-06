@@ -20,7 +20,7 @@ import { reactive, ref, watchEffect } from 'vue'
 import { getTapGetTestCaseLists } from '@/services/apis'
 
 const props = defineProps({
-  name: {
+  dataId: {
     type: String,
     default: '',
   },
@@ -116,7 +116,7 @@ const loading = ref(false)
 const getTestCaseList = async () => {
   loading.value = true
   const res = await getTapGetTestCaseLists({
-    name: props.name,
+    data_id: props.dataId,
     testsuite_id: props.type || undefined,
     page: pagination.page,
     page_size: pagination.pageSize,

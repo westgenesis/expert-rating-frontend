@@ -91,8 +91,8 @@ export const getTapGetTestCaseDetail = (params) => {
 }
 
 // 获取测试集列表
-export const getTapGetTestsetByName = (params) => {
-  return get('/tpa/get_testset_by_name', params)
+export const getTapGetTestsetByDataId = (params) => {
+  return get('/tpa/get_testset_by_data_id', params)
 }
 
 // 测试对象列表

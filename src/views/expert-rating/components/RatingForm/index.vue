@@ -30,7 +30,7 @@ const getRecommend = async () => {
   loading.value = true
   try {
     const res = await getAlearnRecommend({
-      name: ratingObj.name,
+      data_id: ratingObj.dataId,
     })
     recommendData.value = res.data
     message.success('获取推荐评分成功')

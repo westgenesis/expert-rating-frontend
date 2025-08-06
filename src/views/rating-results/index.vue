@@ -8,11 +8,11 @@
       <DefectDistributionStatistics :data="defectDistributionData" class="flex-2/3" />
     </div>
 
-    <RatingHistory :name="ratingObj.name" />
+    <RatingHistory :dataId="ratingObj.dataId" />
 
     <div class="my-4 flex justify-end gap-2">
-      <ConfirmResult :name="ratingObj.name" v-if="!result?.['主观确认状态']" />
-      <InviteExpertRating :projectName="ratingObj.name" v-if="!result?.['主观确认状态']" />
+      <ConfirmResult :dataId="ratingObj.dataId" v-if="!result?.['主观确认状态']" />
+      <InviteExpertRating :dataId="ratingObj.dataId" v-if="!result?.['主观确认状态']" />
     </div>
   </section>
 </template>
@@ -30,7 +30,7 @@ import InviteExpertRating from './components/InviteExpertRating.vue'
 
 import useRatingObj from '@/hooks/useRatingObj'
 
-import { getTapGetTestsetByName } from '@/services/apis'
+import { getTapGetTestsetByDataId } from '@/services/apis'
 
 const ratingObj = useRatingObj()
 defineOptions({
@@ -42,12 +42,12 @@ const loading = ref(false)
 const result = ref(null)
 
 const getResult = async () => {
-  if (!ratingObj.name) {
+  if (!ratingObj.dataId) {
     return
   }
   loading.value = true
-  const response = await getTapGetTestsetByName({
-    name: ratingObj.name,
+  const response = await getTapGetTestsetByDataId({
+    data_id: ratingObj.dataId,
   })
   result.value = response?.data?.[0] || {}
   loading.value = false

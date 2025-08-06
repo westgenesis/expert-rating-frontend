@@ -21,7 +21,7 @@ import { ref, reactive, watchEffect } from 'vue'
 import { getTapGetDefectLists } from '@/services/apis'
 
 const props = defineProps({
-  name: {
+  dataId: {
     type: String,
     default: '',
   },
@@ -98,7 +98,7 @@ const pagination = reactive({
 const getDefectList = async () => {
   loading.value = true
   const res = await getTapGetDefectLists({
-    name: props.name,
+    data_id: props.dataId,
     testsuite_id: props.type || undefined,
     page: pagination.page,
     page_size: pagination.pageSize,

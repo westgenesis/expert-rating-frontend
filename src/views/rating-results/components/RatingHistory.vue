@@ -29,7 +29,7 @@ import { getTapScoreHistory } from '@/services/apis'
 import RatingForm from '@/views/expert-rating/components/RatingForm/RatingForm.vue'
 
 const props = defineProps({
-  name: {
+  dataId: {
     type: String,
     default: '',
   },
@@ -107,7 +107,7 @@ const ratingMatrixFormData = computed(() => {
 const getScoreHistory = async () => {
   loading.value = true
   const response = await getTapScoreHistory({
-    name: props.name,
+    data_id: props.dataId,
   })
   data.value = response?.data || []
   loading.value = false

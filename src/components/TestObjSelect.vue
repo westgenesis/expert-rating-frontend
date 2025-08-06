@@ -8,29 +8,29 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { getTapGetTestObjList } from '@/services/apis'
+import useRatingObj from '@/hooks/useRatingObj'
 const router = useRouter()
 const route = useRoute()
-const options = ref([])
-const selectedValue = ref(route.query.name)
+
+const selectedValue = ref(route.query.data_id)
+
+const { testObjList } = useRatingObj()
 
 watch(
-  () => route.query.name,
+  () => route.query.data_id,
   (newVal) => {
     selectedValue.value = newVal
   },
 )
 
-const getTestObjList = async () => {
-  const res = await getTapGetTestObjList()
-
-  options.value = (res.data || []).map((item) => ({
+const options = computed(() => {
+  return (testObjList.value || []).map((item) => ({
     label: item['测试对象'],
-    value: item['测试对象'],
+    value: item.data_id,
   }))
-}
+})
 
 watch(selectedValue, (newVal) => {
   // 刷新当前页面，添加或更新query里面的name
@@ -38,15 +38,11 @@ watch(selectedValue, (newVal) => {
     name: route.name,
     query: {
       ...(route.query || {}),
-      name: newVal,
+      data_id: newVal,
     },
   })
   setTimeout(() => {
     location.reload()
   }, 1000)
-})
-
-onMounted(() => {
-  getTestObjList()
 })
 </script>
