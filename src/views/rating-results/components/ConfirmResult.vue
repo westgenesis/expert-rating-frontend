@@ -19,7 +19,7 @@ import { getTapSubmitScores } from '@/services/apis'
 import { useMessage } from 'naive-ui'
 
 const props = defineProps({
-  name: {
+  dataId: {
     type: String,
     default: '',
   },
@@ -37,7 +37,7 @@ const handleSubmit = () => {
 const handleConfirmSubmit = async () => {
   visible.value = false
   await getTapSubmitScores({
-    name: props.name,
+    data_id: props.dataId,
   })
     .then(() => {
       message.success('确认评分成功')
