@@ -15,8 +15,8 @@
       <div class="pl-4 flex flex-col gap-2">
         <div
           class="pointer px-4 py-2 rounded-sm text-sm cursor-pointer flex items-center gap-2 hover:bg-[#0c54fddb] hover:text-white transition-colors"
-          :class="{ 'bg-[#0C53FD] text-white': model === item['用例ID'] }"
-          @click="handleClick(item['用例ID'])"
+          :class="{ 'bg-[#0C53FD] text-white': model === item.id }"
+          @click="handleClick(item.id)"
           v-for="(item, index) in data"
           :key="index"
         >
@@ -24,9 +24,9 @@
             <Grid />
           </n-icon>
           <n-ellipsis style="max-width: 240px">
-            {{ item['用例ID'] }}
+            {{ item.name }}
           </n-ellipsis>
-          ({{ item['测试用例数'] }})
+          ({{ item.count }})
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ const data = ref([])
 
 const model = defineModel()
 
-const allCount = computed(() => data.value.reduce((total, item) => total + item['测试用例数'], 0))
+const allCount = computed(() => data.value.reduce((total, item) => total + item.count, 0))
 
 const handleClick = (type) => {
   model.value = type
@@ -73,8 +73,9 @@ const getTestSet = async () => {
   })
   const testSet = response?.data?.[0]?.['用例组'] || {}
   data.value = Object.keys(testSet).map((key) => ({
-    用例ID: key,
-    测试用例数: testSet[key]?.['用例数'],
+    name: testSet[key]?.['用例名字'] || key,
+    id: key,
+    count: testSet[key]?.['用例数'],
   }))
 }
 

@@ -20,9 +20,9 @@
 </template>
 
 <script setup>
-import { h, ref, computed,watch } from 'vue'
+import { h, ref, computed, watch } from 'vue'
 import { routes } from '@/router/index'
-import { RouterLink,useRoute } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { NIcon } from 'naive-ui'
 
 const collapsed = ref(false)
@@ -34,28 +34,31 @@ watch(
   () => route.name,
   (newVal) => {
     activeKey.value = newVal
-  }
+  },
 )
 
 function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) })
 }
 
-const getMenu = (route) => {
+const getMenu = (routeItem) => {
   return {
     label: () =>
       h(
         RouterLink,
         {
           to: {
-            name: route.name,
+            name: routeItem.name,
+            query: route.query,
           },
         },
-        { default: () => route.meta.title },
+        { default: () => routeItem.meta.title },
       ),
-    key: route.name,
-    icon: renderIcon(route.meta.icon),
-    children: route.children?.filter((child) => !child.hideInMenu).map((child) => getMenu(child)),
+    key: routeItem.name,
+    icon: renderIcon(routeItem.meta.icon),
+    children: routeItem.children
+      ?.filter((child) => !child.hideInMenu)
+      .map((child) => getMenu(child)),
   }
 }
 
