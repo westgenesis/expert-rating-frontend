@@ -82,7 +82,7 @@ watch(
   () => {
     if (props.recommendData) {
       ratingMatrixFormData.value.ratingData.forEach((item) => {
-        item.value = Number(props.recommendData[item.dimensionName]) || ''
+        item.value = Number(props.recommendData[item.dimensionName])
       })
     }
   },

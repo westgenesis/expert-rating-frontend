@@ -69,7 +69,7 @@ const columns = ref([
     title: '前置条件',
     key: '前置条件',
     render: (row) => {
-      return <n-ellipsis>{row['前置条件']?.join(' ')}</n-ellipsis>
+      return <n-ellipsis>{row['前置条件']}</n-ellipsis>
     },
   },
   // {

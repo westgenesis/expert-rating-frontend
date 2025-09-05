@@ -10,6 +10,8 @@
 
     <RatingHistory :dataId="ratingObj.dataId" />
 
+    <UsecasesRecommend :dataId="ratingObj.dataId" class="mt-4" />
+
     <div class="my-4 flex justify-end gap-2">
       <ConfirmResult :dataId="ratingObj.dataId" v-if="!result?.['主观确认状态']" />
       <InviteExpertRating :dataId="ratingObj.dataId" v-if="!result?.['主观确认状态']" />
@@ -24,7 +26,7 @@ import RatingOverview from './components/RatingOverview/index.vue'
 import ExecutionStatistics from '@/views/expert-rating/components/TestResult/ExecutionStatistics.vue'
 import DefectDistributionStatistics from '@/views/expert-rating/components/TestResult/DefectDistributionStatistics.vue'
 import RatingHistory from './components/RatingHistory.vue'
-
+import UsecasesRecommend from './components/UsecasesRecommend.vue'
 import ConfirmResult from './components/ConfirmResult.vue'
 import InviteExpertRating from './components/InviteExpertRating.vue'
 

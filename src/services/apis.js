@@ -104,3 +104,8 @@ export const getTapGetTestObjList = (params) => {
 export const getAlearnRecommend = (params) => {
   return get('/alearn/recommend', params)
 }
+
+// 获取推荐用例
+export const postTestcaseRecommend = (data) => {
+  return post('/testcase_recommend/project_recommend', data)
+}
