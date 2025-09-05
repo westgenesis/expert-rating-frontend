@@ -3,7 +3,7 @@
     <n-spin :show="loading" :delay="1000">
       <template #description> 努力生成中，请稍后... </template>
       <template v-if="!!recommend || loading">
-        <n-data-table :columns="columns" :data="data" />
+        <n-data-table :columns="columns" :data="data" :style="{ height: '300px' }" flex-height />
         <MarkdownPreview :md="llmSummarize" />
       </template>
 
