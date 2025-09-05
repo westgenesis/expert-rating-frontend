@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { getTapAllScoreHistory } from '@/services/apis'
 import { format } from 'date-fns'
 import { useRouter } from 'vue-router'
@@ -77,7 +77,7 @@ const handleView = (row) => {
   const url = router.resolve({
     name: 'rating-results',
     query: {
-      name: row['测试对象'],
+      data_id: row['data_id'],
     },
   }).href
   window.open(url, '_blank')
