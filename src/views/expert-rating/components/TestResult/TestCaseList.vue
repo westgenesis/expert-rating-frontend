@@ -47,7 +47,7 @@ const data = ref([])
 const columns = ref([
   {
     title: '所属测试集',
-    key: 'testsuite_id',
+    key: 'testsuite_name',
     ellipsis: {
       tooltip: true,
     },
