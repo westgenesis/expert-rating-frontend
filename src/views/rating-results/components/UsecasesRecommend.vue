@@ -1,15 +1,18 @@
 <template>
   <n-card size="small" title="迭代用例推荐">
+    <template #header-extra v-if="recommend">
+      <n-button size="small" @click="getRecommend" :loading="loading">重新获取推荐</n-button>
+    </template>
     <n-spin :show="loading" :delay="1000">
       <template #description> 努力生成中，请稍后... </template>
       <template v-if="!!recommend || loading">
         <n-data-table :columns="columns" :data="data" :style="{ height: '300px' }" flex-height />
-        <MarkdownPreview :md="llmSummarize" />
+        <MarkdownPreview :md="llmSummarize" v-if="llmSummarize" />
       </template>
 
       <n-empty description="暂未获取推荐用例" v-else>
         <template #extra>
-          <n-button size="small" @click="getRecommend">点击获取</n-button>
+          <n-button size="small" @click="getRecommend">点击获取推荐</n-button>
         </template>
       </n-empty>
     </n-spin>
@@ -17,8 +20,8 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, computed } from 'vue'
-import { postTestcaseRecommend } from '@/services/apis'
+import { ref, computed, onMounted } from 'vue'
+import { postTestcaseRecommend, getTestcaseRecommend } from '@/services/apis'
 import MarkdownPreview from '@/components/MarkdownPreview.vue'
 
 const props = defineProps({
@@ -72,4 +75,15 @@ const getRecommend = async () => {
   recommend.value = response?.data || []
   loading.value = false
 }
+
+const getHistoryRecommend = async () => {
+  const response = await getTestcaseRecommend({
+    data_id: props.dataId,
+  })
+  recommend.value = response?.data || []
+}
+
+onMounted(() => {
+  getHistoryRecommend()
+})
 </script>
