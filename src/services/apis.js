@@ -105,9 +105,14 @@ export const getAlearnRecommend = (params) => {
   return get('/alearn/recommend', params)
 }
 
-// 获取推荐用例
+// 生成推荐用例
 export const postTestcaseRecommend = (data) => {
   return post('/testcase_recommend/project_recommend', data, {
     timeout: 5 * 60 * 1000,
   })
+}
+
+// 获取已生成的推荐用例
+export const getTestcaseRecommend = (params) => {
+  return post('/testcase_recommend/get_project_recommend ', params)
 }
