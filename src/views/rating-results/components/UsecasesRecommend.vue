@@ -4,7 +4,7 @@
       <n-button size="small" @click="getRecommend" :loading="loading">重新获取推荐</n-button>
     </template>
     <n-spin :show="loading" :delay="1000">
-      <template #description> 努力生成中，请稍后... </template>
+      <template #description> 推荐用例生成中，可能耗时较长，请耐心等待... </template>
       <template v-if="!!recommend || loading">
         <n-data-table :columns="columns" :data="data" :style="{ height: '300px' }" flex-height />
         <MarkdownPreview :md="llmSummarize" v-if="llmSummarize" />
@@ -12,7 +12,7 @@
 
       <n-empty description="暂未获取推荐用例" v-else>
         <template #extra>
-          <n-button size="small" @click="getRecommend">点击获取推荐</n-button>
+          <n-button size="small" @click="getRecommend">点击获取</n-button>
         </template>
       </n-empty>
     </n-spin>
@@ -72,7 +72,7 @@ const getRecommend = async () => {
   const response = await postTestcaseRecommend({
     data_id: props.dataId,
   })
-  recommend.value = response?.data || []
+  recommend.value = response?.data || null
   loading.value = false
 }
 
@@ -80,7 +80,10 @@ const getHistoryRecommend = async () => {
   const response = await getTestcaseRecommend({
     data_id: props.dataId,
   })
-  recommend.value = response?.data || []
+
+  if (Object.keys(response?.data || {}).length) {
+    recommend.value = response?.data
+  }
 }
 
 onMounted(() => {
