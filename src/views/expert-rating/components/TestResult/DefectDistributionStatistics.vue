@@ -7,6 +7,7 @@
           <PieChart
             v-if="defectSeverityDistribution && !!Object.keys(defectSeverityDistribution).length"
             :data="defectSeverityDistribution"
+            :getItemStyle="getItemStyle"
           />
           <n-empty class="mt-6" v-else>暂无数据</n-empty>
         </div>
@@ -39,6 +40,17 @@ const props = defineProps({
 const defectSeverityDistribution = computed(() => {
   return props.data?.['缺陷严重程度分布']
 })
+
+const getItemStyle = (key) => {
+  const colorMap = {
+    A: '#EE6767',
+    B: '#FAC858',
+    C: '#d9d9d9',
+    D: '#91CD75',
+  }
+
+  return { color: colorMap[key] }
+}
 
 // 缺陷场景分布
 const defectSceneDistribution = computed(() => {
