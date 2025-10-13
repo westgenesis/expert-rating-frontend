@@ -1,6 +1,6 @@
 <template>
   <n-card size="small" title="缺陷清单">
-    <n-data-table :columns="columns" :data="data" :loading="loading" max-height="250" />
+    <n-data-table :columns="columns" :data="data" :loading="loading" />
 
     <n-pagination
       class="mt-4 justify-end"
@@ -15,9 +15,9 @@
   </n-card>
 </template>
 
-<script setup>
+<script setup lang="jsx">
 import { ref, reactive, watchEffect } from 'vue'
-
+import RenderHTML from '@/components/RenderHTML.vue'
 import { getTapGetDefectLists } from '@/services/apis'
 
 const props = defineProps({
@@ -36,6 +36,7 @@ const columns = ref([
   {
     title: '所属测试集',
     key: 'testsuite_name',
+    width: 150,
     ellipsis: {
       tooltip: true,
     },
@@ -43,6 +44,7 @@ const columns = ref([
   {
     title: '缺陷名称',
     key: '缺陷名称',
+    width: 240,
     ellipsis: {
       tooltip: true,
     },
@@ -52,30 +54,12 @@ const columns = ref([
     key: '严重程度',
     width: 80,
   },
-  {
-    title: '发生频率',
-    key: '发生频率',
-    width: 80,
-  },
 
-  {
-    title: '重现步骤',
-    key: '重现步骤',
-    width: 100,
-    ellipsis: {
-      tooltip: true,
-    },
-  },
-  {
-    title: '所属模块',
-    key: '所属模块',
-    width: 100,
-  },
   {
     title: '缺陷场景',
     key: '缺陷场景',
-    ellipsis: {
-      tooltip: true,
+    render: (row) => {
+      return <RenderHTML html={row['缺陷场景']} />
     },
   },
 ])

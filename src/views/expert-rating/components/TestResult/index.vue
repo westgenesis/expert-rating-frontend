@@ -4,18 +4,18 @@
       <n-text> 测试结果 </n-text>
     </n-h3>
 
-    <div class="flex items-stretch gap-4">
-      <TestSet class="w-1/5 max-h-[600px]" :dataId="ratingObj?.dataId" v-model="params.type" />
+    <div class="flex flex-col gap-4">
+      <TestSet class="mb-2" :dataId="ratingObj?.dataId" v-model="params.type" />
       <div class="flex-1 overflow-x-hidden overflow-y-auto">
         <n-spin :show="loading">
           <div class="w-full overflow-hidden mb-2 flex justify-between items-stretch gap-4">
-            <ExecutionStatistics class="w-1/3" :data="execData" />
-            <DefectDistributionStatistics class="w-2/3" :data="defectDistributionData" />
+            <ExecutionStatistics class="w-1/2" :data="execData" />
+            <DefectDistributionStatistics class="w-1/2" :data="defectDistributionData" />
           </div>
 
-          <TestCaseList class="mb-2" :dataId="ratingObj?.dataId" :type="params.type" />
+          <DefectList class="mb-2" :dataId="ratingObj?.dataId" :type="params.type" />
 
-          <DefectList :dataId="ratingObj?.dataId" :type="params.type" />
+          <TestCaseList :dataId="ratingObj?.dataId" :type="params.type" />
         </n-spin>
       </div>
     </div>

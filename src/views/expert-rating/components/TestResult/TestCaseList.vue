@@ -1,6 +1,6 @@
 <template>
   <n-card size="small" title="测试用例清单">
-    <n-data-table :columns="columns" :data="data" :loading="loading" :max-height="250" />
+    <n-data-table :columns="columns" :data="data" :loading="loading" />
 
     <n-pagination
       class="mt-4 justify-end"
@@ -18,6 +18,7 @@
 <script setup lang="jsx">
 import { reactive, ref, watchEffect } from 'vue'
 import { getTapGetTestCaseLists } from '@/services/apis'
+import RenderHTML from '@/components/RenderHTML.vue'
 
 const props = defineProps({
   dataId: {
@@ -69,32 +70,9 @@ const columns = ref([
     title: '前置条件',
     key: '前置条件',
     render: (row) => {
-      return <n-ellipsis>{row['前置条件']}</n-ellipsis>
+      return <RenderHTML html={row['前置条件']} />
     },
   },
-  // {
-  //   title: '测试类型',
-  //   key: '测试类型',
-  //   render: (row) => {
-  //     if (!row.testType) {
-  //       return
-  //     }
-
-  //     const testMap = {
-  //       1: '自动测试',
-  //       2: '手动测试',
-  //     }
-
-  //     return (
-  //       <n-tag type="success">
-  //         {row.testType
-  //           .split(',')
-  //           .map((item) => testMap[item])
-  //           .join('&')}
-  //       </n-tag>
-  //     )
-  //   },
-  // },
   {
     title: '测试优先级',
     key: '测试优先级',
@@ -107,7 +85,7 @@ const columns = ref([
     title: '测试描述',
     key: '测试描述',
     render: (row) => {
-      return <n-ellipsis>{row['测试描述']}</n-ellipsis>
+      return <RenderHTML html={row['测试描述']} />
     },
   },
 ])
