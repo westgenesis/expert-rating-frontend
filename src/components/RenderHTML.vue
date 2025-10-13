@@ -2,8 +2,8 @@
   <n-ellipsis
     :tooltip="{
       placement: 'top',
-      width: '500px',
-      'content-class': 'max-h-80',
+
+      'content-class': 'max-h-80 max-w-[800px]',
       scrollable: true,
     }"
   >
