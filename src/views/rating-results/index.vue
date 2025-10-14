@@ -4,8 +4,8 @@
     <RatingOverview :data="result" />
 
     <div class="my-4 flex justify-between items-stretch gap-4">
-      <ExecutionStatistics :data="execData" class="flex-1/3" />
-      <DefectDistributionStatistics :data="defectDistributionData" class="flex-2/3" />
+      <ExecutionStatistics :data="execData" class="flex-1/2" />
+      <DefectDistributionStatistics :data="defectDistributionData" class="flex-1/2" />
     </div>
 
     <RatingHistory :dataId="ratingObj.dataId" />

@@ -49,6 +49,7 @@ const columns = ref([
   {
     title: '所属测试集',
     key: 'testsuite_name',
+    width: 150,
     ellipsis: {
       tooltip: true,
     },
@@ -56,15 +57,12 @@ const columns = ref([
   {
     title: '用例编号',
     key: '用例编号',
+    width: 240,
   },
   {
     title: '用例名称',
     key: '用例名称',
-  },
-  {
-    title: '所属模块',
-    key: '所属模块',
-    width: 100,
+    width: 240,
   },
   {
     title: '前置条件',
@@ -74,18 +72,18 @@ const columns = ref([
     },
   },
   {
+    title: '测试描述',
+    key: '测试描述',
+    render: (row) => {
+      return <RenderHTML html={row['测试描述']} />
+    },
+  },
+  {
     title: '测试优先级',
     key: '测试优先级',
     width: 100,
     ellipsis: {
       tooltip: true,
-    },
-  },
-  {
-    title: '测试描述',
-    key: '测试描述',
-    render: (row) => {
-      return <RenderHTML html={row['测试描述']} />
     },
   },
 ])
