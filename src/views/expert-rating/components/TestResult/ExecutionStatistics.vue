@@ -60,10 +60,10 @@ const levelOptions = [
 const level = ref('全部')
 
 const getItemStyle = (key) => {
-  // 通过 失败 异常 无判定
+  // 通过 未通过 异常 无判定
   const colorMap = {
     通过: '#91CD75',
-    失败: '#EE6767',
+    未通过: '#EE6767',
     异常: '#FAC858',
     无判定: '#d9d9d9',
   }
@@ -72,6 +72,12 @@ const getItemStyle = (key) => {
 }
 
 const filterData = computed(() => {
-  return props.data[level.value]
+  const data = props.data[level.value] || {}
+  if ('失败' in data) {
+    data['未通过'] = data['失败']
+    delete data['失败']
+  }
+
+  return data
 })
 </script>
