@@ -7,7 +7,13 @@
         :value="data.objectiveScore"
         color="#54A7FF"
       />
-      <ScoreBlock :icon="HatGraduation16Filled" title="专家评分" :value="80" color="#6950A1" />
+      <ScoreBlock
+        v-if="data.expertScore"
+        :icon="HatGraduation16Filled"
+        title="专家评分"
+        :value="data.expertScore"
+        color="#6950A1"
+      />
     </div>
     <div class="flex-1 grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-4 h-fit">
       <NumberBlock v-for="(item, index) in numberList" :key="index" v-bind="item" />
