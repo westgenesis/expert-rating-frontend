@@ -2,32 +2,23 @@
   <n-ellipsis
     :tooltip="{
       placement: 'top',
-
-      'content-class': 'max-h-80 max-w-[800px]',
-      scrollable: true,
     }"
+    expand-trigger="click"
+    line-clamp="3"
   >
-    {{ plainText }}
+    <div v-html="html"></div>
 
     <template #tooltip>
-      <div v-html="html"></div>
+      <div>点击查看更多</div>
     </template>
   </n-ellipsis>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
-const props = defineProps({
+defineProps({
   html: {
     type: String,
     default: '',
   },
 })
-
-const plainText = computed(() => {
-  return props.html.replace(/<[^>]+>/g, '')
-})
 </script>
-
-<style></style>
