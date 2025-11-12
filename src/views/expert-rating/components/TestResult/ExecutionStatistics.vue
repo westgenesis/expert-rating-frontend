@@ -44,6 +44,10 @@ const levelOptions = [
     value: '全部',
   },
   {
+    label: 'critical',
+    value: 'bvt优先级',
+  },
+  {
     label: '高优先级',
     value: '高优先级',
   },
