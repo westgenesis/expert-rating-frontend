@@ -7,13 +7,19 @@ const routes = [
     name: 'home',
     component: () => import('../components/Layout/index.vue'),
     meta: { title: '专家评测系统' },
-    redirect: '/settings',
+    redirect: '/system-settings',
     children: [
       {
-        path: 'settings',
-        name: 'settings',
+        path: 'system-settings',
+        name: 'system-settings',
+        component: () => import('../views/system-settings/index.vue'),
+        meta: { title: '系统设置', icon: Settings },
+      },
+      {
+        path: 'rating-settings',
+        name: 'rating-settings',
         component: () => import('../views/rating-settings/index.vue'),
-        meta: { title: '设置', icon: Settings },
+        meta: { title: '评分设置', icon: Settings },
       },
       {
         path: 'expert-rating',

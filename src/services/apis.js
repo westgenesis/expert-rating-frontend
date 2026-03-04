@@ -1,4 +1,6 @@
-import { get, patch, post } from './http.js'
+import createApi from './http.js'
+
+const { get, patch, post } = createApi()
 
 // 获取专家评分矩阵
 export const getShowExpertRatingMatrix = (params) => {
@@ -114,5 +116,5 @@ export const postTestcaseRecommend = (data) => {
 
 // 获取已生成的推荐用例
 export const getTestcaseRecommend = (params) => {
-  return post('/testcase_recommend/get_project_recommend ', params)
+  return post('/testcase_recommend/get_project_recommend', params)
 }
