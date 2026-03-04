@@ -4,9 +4,9 @@
       <n-space v-if="!loading">
         <n-popconfirm @positive-click="handleReset">
           <template #trigger>
-            <n-button> 重设为默认值 </n-button>
+            <n-button> 恢复系统设置 </n-button>
           </template>
-          是否重设为默认值？重设后将覆盖当前设置，并提交更新。
+          将更新所有设置为系统默认值，是否继续？
         </n-popconfirm>
 
         <n-button type="primary" @click="() => handleSubmit()" :loading="submitting">
