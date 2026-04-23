@@ -26,6 +26,11 @@
             :max="1"
             :step="0.01"
           />
+          <FormulaTips
+            class="flex-1"
+            formula="综合得分 = 客观评分 × 主观评分系数 + 专家平均分 × 客观评分系数"
+            keyword="主观评分系数"
+          />
         </n-form-item>
         <n-form-item path="data.objective" label="客观评分系数">
           <n-input-number
@@ -34,6 +39,11 @@
             :min="0"
             :max="1"
             :step="0.01"
+          />
+          <FormulaTips
+            class="flex-1"
+            formula="综合得分 = 客观评分 × 主观评分系数 + 专家平均分 × 客观评分系数"
+            keyword="客观评分系数"
           />
         </n-form-item>
       </n-form>

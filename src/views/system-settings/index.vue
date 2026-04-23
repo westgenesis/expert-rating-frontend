@@ -27,50 +27,72 @@
         :rules="rules"
       >
         <n-form-item path="deduplicate_threshold" label="去重阈值">
-          <ResetWrapper
-            :originalValue="data?.system_config.deduplicate_threshold"
-            v-model="formData.deduplicate_threshold"
-          >
-            <n-input-number
-              placeholder="请输入去重阈值，范围0-1"
-              v-model:value="formData.deduplicate_threshold"
-              :min="0"
-              :max="1"
-              :step="0.01"
+          <div class="w-full flex items-center gap-2">
+            <ResetWrapper
+              :originalValue="data?.system_config.deduplicate_threshold"
+              v-model="formData.deduplicate_threshold"
+            >
+              <n-input-number
+                placeholder="请输入去重阈值，范围0-1"
+                v-model:value="formData.deduplicate_threshold"
+                :min="0"
+                :max="1"
+                :step="0.01"
+                class="min-w-[215px]"
+              />
+            </ResetWrapper>
+            <FormulaTips
+              class="flex-1"
+              formula="系统会先计算当前测试用例与历史唯一用例的相似度,当最高相似度达到去重阈值时，再调用大模型判断该用例是否重复。"
+              keyword="去重阈值"
             />
-          </ResetWrapper>
+          </div>
         </n-form-item>
 
         <n-form-item path="failure_score_limit" label="失败分数上限">
-          <ResetWrapper
-            :originalValue="data?.system_config.failure_score_limit"
-            v-model="formData.failure_score_limit"
-          >
-            <n-input-number
-              placeholder="请输入失败分数上限，范围0-100"
-              v-model:value="formData.failure_score_limit"
-              :min="0"
-              :max="100"
-              :step="1"
-              :precision="0"
+          <div class="w-full flex items-center gap-2">
+            <ResetWrapper
+              :originalValue="data?.system_config.failure_score_limit"
+              v-model="formData.failure_score_limit"
+            >
+              <n-input-number
+                placeholder="请输入失败分数上限，范围0-100"
+                v-model:value="formData.failure_score_limit"
+                :min="0"
+                :max="100"
+                :step="1"
+                :precision="0"
+              />
+            </ResetWrapper>
+            <FormulaTips
+              class="flex-1"
+              formula="测试用例的优先级得分(总分) = 基础分 + min( 根号(执行次数) * 执行次数 ，执行分数上限 ) + min( 根号(失败次数/执行次数) * 失败次数 ，失败分数上限 )"
+              keyword="失败分数上限"
             />
-          </ResetWrapper>
+          </div>
         </n-form-item>
 
         <n-form-item path="execute_score_limit" label="执行分数上限">
-          <ResetWrapper
-            :originalValue="data?.system_config.execute_score_limit"
-            v-model="formData.execute_score_limit"
-          >
-            <n-input-number
-              placeholder="请输入执行分数上限，范围0-100"
-              v-model:value="formData.execute_score_limit"
-              :min="0"
-              :max="100"
-              :step="1"
-              :precision="0"
+          <div class="w-full flex items-center gap-2">
+            <ResetWrapper
+              :originalValue="data?.system_config.execute_score_limit"
+              v-model="formData.execute_score_limit"
+            >
+              <n-input-number
+                placeholder="请输入执行分数上限，范围0-100"
+                v-model:value="formData.execute_score_limit"
+                :min="0"
+                :max="100"
+                :step="1"
+                :precision="0"
+              />
+            </ResetWrapper>
+            <FormulaTips
+              class="flex-1"
+              formula="测试用例的优先级得分(总分) = 基础分 + min( 根号(执行次数) * 执行次数 ，执行分数上限 ) + min( 根号(失败次数/执行次数) * 失败次数 ，失败分数上限 )"
+              keyword="执行分数上限"
             />
-          </ResetWrapper>
+          </div>
         </n-form-item>
 
         <n-form-item path="recommend_use_llm" label="是否启用大模型推荐">
@@ -174,7 +196,7 @@ import { onMounted, ref } from 'vue'
 import { getSystemConfig, setSystemConfig } from '@/services/apis2'
 import { useMessage } from 'naive-ui'
 import ResetWrapper from './components/ResetWrapper.vue'
-
+import FormulaTips from '@/components/FormulaTips.vue'
 defineOptions({
   name: 'SystemSettings',
 })
