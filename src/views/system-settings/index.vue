@@ -41,16 +41,28 @@
                 class="min-w-[215px]"
               />
             </ResetWrapper>
-            <FormulaTips
-              class="flex-1"
-              formula="系统会先计算当前测试用例与历史唯一用例的相似度,当最高相似度达到去重阈值时，再调用大模型判断该用例是否重复。"
-              keyword="去重阈值"
-            />
+
+            <n-tooltip>
+              <template #trigger>
+                <n-icon class="shrink-0 text-[#f3ab40]">
+                  <TipsAndUpdatesFilled />
+                </n-icon>
+              </template>
+              <div>
+                {{ formulaDeduplicationThreshold }}
+              </div>
+            </n-tooltip>
           </div>
         </n-form-item>
 
-        <n-form-item path="failure_score_limit" label="失败分数上限">
-          <div class="w-full flex items-center gap-2">
+        <div class="border border-gray-200 p-2 rounded-md mb-2">
+          <FormulaTips
+            class="flex-1 mb-4"
+            :formula="formulaPriorityScore"
+            :keywords="keywordsScoreLimit"
+          />
+
+          <n-form-item path="failure_score_limit" label="失败分数上限">
             <ResetWrapper
               :originalValue="data?.system_config.failure_score_limit"
               v-model="formData.failure_score_limit"
@@ -64,16 +76,9 @@
                 :precision="0"
               />
             </ResetWrapper>
-            <FormulaTips
-              class="flex-1"
-              formula="测试用例的优先级得分(总分) = 基础分 + min( 根号(执行次数) * 执行次数 ，执行分数上限 ) + min( 根号(失败次数/执行次数) * 失败次数 ，失败分数上限 )"
-              keyword="失败分数上限"
-            />
-          </div>
-        </n-form-item>
+          </n-form-item>
 
-        <n-form-item path="execute_score_limit" label="执行分数上限">
-          <div class="w-full flex items-center gap-2">
+          <n-form-item path="execute_score_limit" label="执行分数上限">
             <ResetWrapper
               :originalValue="data?.system_config.execute_score_limit"
               v-model="formData.execute_score_limit"
@@ -87,13 +92,8 @@
                 :precision="0"
               />
             </ResetWrapper>
-            <FormulaTips
-              class="flex-1"
-              formula="测试用例的优先级得分(总分) = 基础分 + min( 根号(执行次数) * 执行次数 ，执行分数上限 ) + min( 根号(失败次数/执行次数) * 失败次数 ，失败分数上限 )"
-              keyword="执行分数上限"
-            />
-          </div>
-        </n-form-item>
+          </n-form-item>
+        </div>
 
         <n-form-item path="recommend_use_llm" label="是否启用大模型推荐">
           <ResetWrapper
@@ -192,6 +192,7 @@
 </template>
 
 <script setup>
+import { TipsAndUpdatesFilled } from '@vicons/material'
 import { onMounted, ref } from 'vue'
 import { getSystemConfig, setSystemConfig } from '@/services/apis2'
 import { useMessage } from 'naive-ui'
@@ -203,6 +204,14 @@ defineOptions({
 
 const message = useMessage()
 const loading = ref(false)
+
+const formulaDeduplicationThreshold = `系统会先计算当前测试用例与历史唯一用例的相似度；当最高相似度达到【去重阈值】时，再调用大模型判断该用例是否重复。`
+/**
+ * 优先级得分与两个「上限」字段相关；公式相同，仅高亮词不同。
+ * 根号 → \\sqrt，min → \\min，分数 → \\frac。
+ */
+const formulaPriorityScore = `\\text{测试用例的优先级得分(总分)} = \\text{基础分} + \\min\\!\\left( \\sqrt{\\text{执行次数}} \\times \\text{执行次数} ,\\; \\text{执行分数上限} \\right) + \\min\\!\\left( \\sqrt{\\frac{\\text{失败次数}}{\\text{执行次数}}} \\times \\text{失败次数} ,\\; \\text{失败分数上限} \\right)`
+const keywordsScoreLimit = ['\\text{失败分数上限}', '\\text{执行分数上限}']
 const formRef = ref(null)
 
 const submitting = ref(null)

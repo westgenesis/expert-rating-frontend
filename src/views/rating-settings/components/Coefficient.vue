@@ -7,8 +7,14 @@
     </template>
 
     <div>
+      <FormulaTips
+        class="flex-1 mb-4"
+        :formula="`\\text{综合得分}=\\text{客观评分} \\times \\text{主观评分系数}+\\text{专家平均分}\\times \\text{客观评分系数}`"
+        :keywords="['\\text{主观评分系数}', '\\text{客观评分系数}']"
+      />
       <n-skeleton v-if="loading" text :repeat="2" />
       <!-- 使用n-form来提交 -->
+
       <n-form
         v-else
         label-width="120px"
@@ -26,11 +32,6 @@
             :max="1"
             :step="0.01"
           />
-          <FormulaTips
-            class="flex-1"
-            formula="综合得分 = 客观评分 × 主观评分系数 + 专家平均分 × 客观评分系数"
-            keyword="主观评分系数"
-          />
         </n-form-item>
         <n-form-item path="data.objective" label="客观评分系数">
           <n-input-number
@@ -39,11 +40,6 @@
             :min="0"
             :max="1"
             :step="0.01"
-          />
-          <FormulaTips
-            class="flex-1"
-            formula="综合得分 = 客观评分 × 主观评分系数 + 专家平均分 × 客观评分系数"
-            keyword="客观评分系数"
           />
         </n-form-item>
       </n-form>
