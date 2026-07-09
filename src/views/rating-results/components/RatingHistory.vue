@@ -1,25 +1,27 @@
 <template>
-  <n-card size="small" title="主观评价详情">
-    <n-spin :show="loading" :delay="1000">
-      <n-data-table :columns="columns" :data="data" />
-    </n-spin>
-  </n-card>
+  <div>
+    <n-card size="small" title="主观评价详情">
+      <n-spin :show="loading" :delay="1000">
+        <n-data-table :columns="columns" :data="data" />
+      </n-spin>
+    </n-card>
 
-  <n-modal
-    v-model:show="detailVisible"
-    title="专家打分详情"
-    preset="card"
-    size="medium"
-    style="width: 600px"
-  >
-    <RatingForm previewMode :ratingMatrixFormData="ratingMatrixFormData">
-      <template #prefix>
-        <n-form-item label-placement="left" path="name" label="专家：">
-          {{ currentRow['评分专家'] }}
-        </n-form-item>
-      </template>
-    </RatingForm>
-  </n-modal>
+    <n-modal
+      v-model:show="detailVisible"
+      title="专家打分详情"
+      preset="card"
+      size="medium"
+      style="width: 600px"
+    >
+      <RatingForm previewMode :ratingMatrixFormData="ratingMatrixFormData">
+        <template #prefix>
+          <n-form-item label-placement="left" path="name" label="专家：">
+            {{ currentRow['评分专家'] }}
+          </n-form-item>
+        </template>
+      </RatingForm>
+    </n-modal>
+  </div>
 </template>
 
 <script setup lang="jsx">

@@ -118,3 +118,61 @@ export const postTestcaseRecommend = (data) => {
 export const getTestcaseRecommend = (params) => {
   return post('/testcase_recommend/get_project_recommend', params)
 }
+
+// ==================== 测试评测报告接口 ====================
+
+/**
+ * 获取报告汇总数据
+ * 包含：报告标题、评价概况、执行汇总、缺陷统计、分析状态
+ * @param {Object} params - { data_id: string }
+ */
+export const getReportSummary = (params) => {
+  return get('/tpa/report/summary', params)
+}
+
+/**
+ * 分页查询测试用例明细
+ * @param {Object} params - { data_id, page, page_size, priority, testsuite_id, keyword }
+ */
+export const getReportTestcases = (params) => {
+  return get('/tpa/report/testcases', params)
+}
+
+/**
+ * 分页查询缺陷明细
+ * @param {Object} params - { data_id, page, page_size, severity, scenario, keyword }
+ */
+export const getReportDefects = (params) => {
+  return get('/tpa/report/defects', params)
+}
+
+/**
+ * 查询可邀请的评分专家列表
+ */
+export const getReportExperts = () => {
+  return get('/tpa/report/experts')
+}
+
+/**
+ * 邀请专家评分
+ * @param {Object} data - { data_id: string, emails: string[] }
+ */
+export const postReportInvitations = (data) => {
+  return post('/tpa/report/invitations', data)
+}
+
+/**
+ * 查询大模型分析状态和结果
+ * @param {Object} params - { data_id: string }
+ */
+export const getReportAnalysis = (params) => {
+  return get('/tpa/report/analysis', params)
+}
+
+/**
+ * 触发大模型生成分析（同步接口）
+ * @param {Object} data - { data_id: string, force?: boolean }
+ */
+export const postReportAnalysisGenerate = (data) => {
+  return post('/tpa/report/analysis/generate', data)
+}
