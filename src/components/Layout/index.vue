@@ -25,6 +25,9 @@ defineOptions({
 const { exportInfo } = useExperInfo()
 
 const isAdmin = computed(() => {
-  return exportInfo?.value?.name === '管理员' && exportInfo?.value?.email === 'admin@admin.com'
+  return (
+    !!exportInfo?.value ||
+    (exportInfo?.value?.name === '管理员' && exportInfo?.value?.email === 'admin@admin.com')
+  )
 })
 </script>
