@@ -7,7 +7,7 @@
       {{ title }}
     </h1>
 
-    <TestObjSelect />
+    <TestObjSelect v-if="isDev" />
 
     <div class="flex flex-col items-center py-1" v-if="exportInfo">
       <n-avatar round size="small">
@@ -39,4 +39,6 @@ const title = computed(() => {
 const icon = computed(() => {
   return route.meta.icon || null
 })
+
+const isDev = import.meta.env.DEV
 </script>

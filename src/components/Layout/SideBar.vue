@@ -24,11 +24,18 @@ import { h, ref, computed, watch } from 'vue'
 import { routes } from '@/router/index'
 import { RouterLink, useRoute } from 'vue-router'
 import { NIcon } from 'naive-ui'
+import useExperInfo from '@/hooks/useExpertInfo'
 
 const collapsed = ref(false)
 
 const route = useRoute()
 const activeKey = ref(route.name)
+
+const { exportInfo } = useExperInfo()
+
+const isAdmin = computed(() => {
+  return exportInfo?.value?.name === '管理员' && exportInfo?.value?.email === 'admin@admin.com'
+})
 
 watch(
   () => route.name,
@@ -57,12 +64,16 @@ const getMenu = (routeItem) => {
     key: routeItem.name,
     icon: renderIcon(routeItem.meta.icon),
     children: routeItem.children
-      ?.filter((child) => !child.hideInMenu)
+      ?.filter((child) => {
+        return isAdmin.value ? !child.meta.hideForAdmin : true
+      })
       .map((child) => getMenu(child)),
   }
 }
 
 const menuOptions = computed(() => {
-  return routes[0].children.filter((route) => !route.hideInMenu).map(getMenu)
+  return routes[0].children
+    .filter((route) => (isAdmin.value ? !route.meta.hideForAdmin : true))
+    .map(getMenu)
 })
 </script>

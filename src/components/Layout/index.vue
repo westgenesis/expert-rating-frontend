@@ -2,8 +2,8 @@
   <div class="flex flex-col h-screen bg-white">
     <Header />
 
-    <n-layout :has-sider="!isHideMenu">
-      <SideBar v-if="!isHideMenu" />
+    <n-layout :has-sider="isAdmin">
+      <SideBar v-if="isAdmin" />
       <Content />
     </n-layout>
   </div>
@@ -11,19 +11,20 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 
 import Header from './Header.vue'
 import SideBar from './SideBar.vue'
 import Content from './Content.vue'
 
+import useExperInfo from '@/hooks/useExpertInfo'
+
 defineOptions({
   name: 'PageLayout',
 })
 
-const route = useRoute()
+const { exportInfo } = useExperInfo()
 
-const isHideMenu = computed(() => {
-  return route.isHideMenu
+const isAdmin = computed(() => {
+  return exportInfo?.value?.name === '管理员' && exportInfo?.value?.email === 'admin@admin.com'
 })
 </script>
