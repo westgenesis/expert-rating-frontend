@@ -34,25 +34,43 @@ const testcases = ref([])
 
 /** n-data-table 列定义 */
 const columns = [
-  { title: '用例编号', key: 'testcase_number', width: 130,
-    render: (row) => row.testcase_number || row.testcase_id || '--' },
+  {
+    title: '用例编号',
+    key: 'testcase_number',
+    width: 130,
+    render: (row) => row.testcase_number || row.testcase_id || '--',
+  },
   { title: '用例名称', key: 'testcase_name', ellipsis: { tooltip: true } },
   { title: '测试类型', key: 'testcase_type', width: 100 },
   { title: '优先级', key: 'priority', width: 90 },
   { title: '描述信息', key: 'description', ellipsis: { tooltip: true } },
-  { title: '逻辑用例', key: 'logical_cases', ellipsis: { tooltip: true },
-    render: (row) => (row.logical_cases || []).join('；') || '--' },
-  { title: '测试步骤', key: 'steps', ellipsis: { tooltip: true },
-    render: (row) => formatSteps(row.steps) },
-  { title: '预期结果', key: 'expected_results', ellipsis: { tooltip: true },
-    render: (row) => (row.expected_results || []).join('\n') || '--' },
+  {
+    title: '逻辑用例',
+    key: 'logical_cases',
+    ellipsis: { tooltip: true },
+    render: (row) => (row.logical_cases || []).map((item) => item.ctcNum).join('；') || '--',
+  },
+  {
+    title: '测试步骤',
+    key: 'steps',
+    ellipsis: { tooltip: true },
+    render: (row) => formatSteps(row.steps),
+  },
+  {
+    title: '预期结果',
+    key: 'expected_results',
+    ellipsis: { tooltip: true },
+    render: (row) => (row.expected_results || []).join('\n') || '--',
+  },
 ]
 
 const fetchTestcases = async () => {
   if (!props.dataId) return
   try {
     const { data } = await getReportTestcases({
-      data_id: props.dataId, page: page.value, page_size: pageSize.value,
+      data_id: props.dataId,
+      page: page.value,
+      page_size: pageSize.value,
     })
     testcases.value = data?.data || []
     total.value = data?.total || 0
@@ -70,5 +88,7 @@ const formatSteps = (steps) => {
     .join('\n')
 }
 
-onMounted(() => { fetchTestcases() })
+onMounted(() => {
+  fetchTestcases()
+})
 </script>

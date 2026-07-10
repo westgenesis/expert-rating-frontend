@@ -37,7 +37,11 @@ const props = defineProps({
  * @param {*} val
  * @returns {string}
  */
-const esc = (val) => String(val ?? '--').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const esc = (val) =>
+  String(val ?? '--')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 
 /**
  * 格式化数组为顿号分隔
@@ -76,16 +80,20 @@ const handleExport = async () => {
 
   // 并行获取导出所需数据
   const [tcRes, bugRes, scoreRes, recRes] = await Promise.allSettled([
-    did ? getReportTestcases({ data_id: did, page: 1, page_size: 200 }) : Promise.resolve({ data: { data: [] } }),
-    did ? getReportDefects({ data_id: did, page: 1, page_size: 200 }) : Promise.resolve({ data: { data: [] } }),
+    did
+      ? getReportTestcases({ data_id: did, page: 1, page_size: 200 })
+      : Promise.resolve({ data: { data: [] } }),
+    did
+      ? getReportDefects({ data_id: did, page: 1, page_size: 200 })
+      : Promise.resolve({ data: { data: [] } }),
     did ? getTapScoreHistory({ data_id: did }) : Promise.resolve({ data: [] }),
     did ? getTestcaseRecommend({ data_id: did }) : Promise.resolve({ data: {} }),
   ])
 
-  const tcs = tcRes.status === 'fulfilled' ? (tcRes.value?.data?.data || []) : []
-  const bugs = bugRes.status === 'fulfilled' ? (bugRes.value?.data?.data || []) : []
-  const scores = scoreRes.status === 'fulfilled' ? (scoreRes.value?.data || []) : []
-  const rec = recRes.status === 'fulfilled' ? (recRes.value?.data || {}) : {}
+  const tcs = tcRes.status === 'fulfilled' ? tcRes.value?.data?.data || [] : []
+  const bugs = bugRes.status === 'fulfilled' ? bugRes.value?.data?.data || [] : []
+  const scores = scoreRes.status === 'fulfilled' ? scoreRes.value?.data || [] : []
+  const rec = recRes.status === 'fulfilled' ? recRes.value?.data || {} : {}
 
   // --- 各模块 HTML 构建函数 ---
 
@@ -103,7 +111,10 @@ const handleExport = async () => {
 
   const sevLabels = { A: 'A级（致命）', B: 'B级（严重）', C: 'C级（一般）', D: 'D级（轻微）' }
   const sevRows = Object.entries(defStats.severity_distribution || {})
-    .map(([k, c], i) => `<tr><td>${i + 1}</td><td>${k}（${sevLabels[k] || ''}）</td><td>${c}</td></tr>`)
+    .map(
+      ([k, c], i) =>
+        `<tr><td>${i + 1}</td><td>${k}（${sevLabels[k] || ''}）</td><td>${c}</td></tr>`,
+    )
     .join('')
 
   const freqRows = Object.entries(defStats.frequency_distribution || {})
@@ -116,7 +127,7 @@ const handleExport = async () => {
         <tr>
           <td>${esc(r.testcase_number || r.testcase_id)}</td><td>${esc(r.testcase_name)}</td>
           <td>${esc(r.testcase_type)}</td><td>${esc(r.priority)}</td><td>${esc(r.description)}</td>
-          <td>${esc((r.logical_cases || []).join('；'))}</td><td>${esc(fmtSteps(r.steps))}</td>
+          <td>${esc((r.logical_cases || []).map((item) => item.ctcNum).join('；'))}</td><td>${esc(fmtSteps(r.steps))}</td>
           <td>${esc((r.expected_results || []).join('；'))}</td>
         </tr>`,
     )
