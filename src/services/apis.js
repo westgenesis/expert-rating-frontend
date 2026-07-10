@@ -174,5 +174,7 @@ export const getReportAnalysis = (params) => {
  * @param {Object} data - { data_id: string, force?: boolean }
  */
 export const postReportAnalysisGenerate = (data) => {
-  return post('/tpa/report/analysis/generate', data)
+  return post('/tpa/report/analysis/generate', data, {
+    timeout: 5 * 60 * 1000,
+  })
 }
