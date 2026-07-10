@@ -6,81 +6,82 @@
 
       <div class="flex justify-between items-start mb-5">
         <ReportHeader :testObject="summary?.test_object || ''" class="!mb-0" />
-        <ExportPDFButton
-          :summary="summary"
-          :analysisData="analysisData"
-          :dataId="dataId"
-        />
+        <ExportPDFButton :summary="summary" :analysisData="analysisData" :dataId="dataId" />
       </div>
 
-        <!-- 评价概况（复用原有 RatingOverview 组件） -->
-        <RatingOverview v-if="summary?.overview" :data="summary.overview" class="mb-5" />
+      <!-- 评价概况（复用原有 RatingOverview 组件） -->
+      <RatingOverview
+        v-if="summary?.overview"
+        :data="summary.overview"
+        :isConfirmed="!!confirmData?.['主观确认状态']"
+        class="mb-5"
+      />
 
-        <!-- 测试用例统计信息 -->
-        <n-card size="small" title="测试用例统计信息" class="mb-5">
-          <!-- 用例执行汇总 -->
-          <ExecutionSummary :data="summary?.execution_summary || []" />
+      <!-- 测试用例统计信息 -->
+      <n-card size="small" title="测试用例统计信息" class="mb-5">
+        <!-- 用例执行汇总 -->
+        <ExecutionSummary :data="summary?.execution_summary || []" />
 
-          <!-- 测试用例明细 -->
-          <TestCaseDetail :dataId="dataId" />
-        </n-card>
+        <!-- 测试用例明细 -->
+        <TestCaseDetail :dataId="dataId" />
+      </n-card>
 
-        <!-- 缺陷统计 + 缺陷明细 -->
-        <n-card size="small" title="缺陷分布统计与明细" class="mb-5">
-          <DefectStatistics :data="summary?.defect_statistics" />
-          <DefectDetail :dataId="dataId" />
-        </n-card>
+      <!-- 缺陷统计 + 缺陷明细 -->
+      <n-card size="small" title="缺陷分布统计与明细" class="mb-5">
+        <DefectStatistics :data="summary?.defect_statistics" />
+        <DefectDetail :dataId="dataId" />
+      </n-card>
 
-        <!-- 主观评价详情 -->
-        <RatingHistory :dataId="dataId" class="mb-5" />
+      <!-- 主观评价详情 -->
+      <RatingHistory :dataId="dataId" class="mb-5" />
 
-        <!-- 迭代用例推荐 -->
-        <UsecasesRecommend :dataId="dataId" class="mb-5" />
+      <!-- 迭代用例推荐 -->
+      <UsecasesRecommend :dataId="dataId" class="mb-5" />
 
-        <!-- AI 分析区域 -->
-        <template v-if="analysisData">
-          <!-- 整体质量分析 -->
-          <QualityAnalysis
-            v-if="analysisData.quality_analysis?.length"
-            :data="analysisData.quality_analysis"
-            :conclusion="analysisData.conclusion || ''"
-            class="mb-5"
-          />
+      <!-- AI 分析区域 -->
+      <template v-if="analysisData">
+        <!-- 整体质量分析 -->
+        <QualityAnalysis
+          v-if="analysisData.quality_analysis?.length"
+          :data="analysisData.quality_analysis"
+          :conclusion="analysisData.conclusion || ''"
+          class="mb-5"
+        />
 
-          <!-- 遗留风险分析 -->
-          <ResidualRisks
-            v-if="analysisData.residual_risks?.length"
-            :data="analysisData.residual_risks"
-            class="mb-5"
-          />
+        <!-- 遗留风险分析 -->
+        <ResidualRisks
+          v-if="analysisData.residual_risks?.length"
+          :data="analysisData.residual_risks"
+          class="mb-5"
+        />
 
-          <!-- 后续优化落地建议 -->
-          <OptimizationSuggestions
-            v-if="analysisData.optimization_suggestions?.length"
-            :data="analysisData.optimization_suggestions"
-            class="mb-5"
-          />
-        </template>
+        <!-- 后续优化落地建议 -->
+        <OptimizationSuggestions
+          v-if="analysisData.optimization_suggestions?.length"
+          :data="analysisData.optimization_suggestions"
+          class="mb-5"
+        />
+      </template>
 
-        <!-- AI 分析加载/失败状态 -->
-        <n-card v-if="analysisStatus === 'processing'" size="small" class="mb-5">
-          <div class="flex items-center justify-center py-12">
-            <n-spin size="medium" />
-            <span class="ml-3 text-gray-500">AI 正在生成分析报告，请稍候...</span>
-          </div>
-        </n-card>
+      <!-- AI 分析加载/失败状态 -->
+      <n-card v-if="analysisStatus === 'processing'" size="small" class="mb-5">
+        <div class="flex items-center justify-center py-12">
+          <n-spin size="medium" />
+          <span class="ml-3 text-gray-500">AI 正在生成分析报告，请稍候...</span>
+        </div>
+      </n-card>
 
-        <n-card v-if="analysisStatus === 'failed'" size="small" class="mb-5">
-          <div class="flex flex-col items-center py-8 gap-4">
-            <span class="text-red-500">{{ analysisError || 'AI 分析生成失败' }}</span>
-            <n-button type="primary" @click="handleRetryAnalysis" :loading="analysisRetrying">
-              重新生成分析
-            </n-button>
-          </div>
-        </n-card>
+      <n-card v-if="analysisStatus === 'failed'" size="small" class="mb-5">
+        <div class="flex flex-col items-center py-8 gap-4">
+          <span class="text-red-500">{{ analysisError || 'AI 分析生成失败' }}</span>
+          <n-button type="primary" @click="handleRetryAnalysis" :loading="analysisRetrying">
+            重新生成分析
+          </n-button>
+        </div>
+      </n-card>
       <!-- 底部操作按钮（打印时隐藏） -->
       <div class="flex justify-end gap-3 pb-4 footer-actions">
-        <ConfirmResult :dataId="dataId" />
+        <ConfirmResult :dataId="dataId" @submit="fetchConfirmData" />
         <n-button type="primary" @click="expertDrawerVisible = true"> 邀请专家评分 </n-button>
       </div>
     </n-spin>
@@ -97,6 +98,7 @@ import {
   getReportSummary,
   getReportAnalysis,
   postReportAnalysisGenerate,
+  getTapGetTestsetByDataId,
 } from '@/services/apis'
 import ReportHeader from './components/ReportHeader.vue'
 import ExportPDFButton from './components/ExportPDFButton.vue'
@@ -143,6 +145,18 @@ const analysisRetrying = ref(false)
 /** 专家抽屉可见性 */
 const expertDrawerVisible = ref(false)
 
+const confirmData = ref(null)
+
+// 获取确认状态数据
+const fetchConfirmData = async () => {
+  if (!dataId.value) return
+  try {
+    const { data } = await getTapGetTestsetByDataId({ data_id: dataId.value })
+    confirmData.value = data?.[0] || null
+  } catch (err) {
+    console.error('获取确认状态失败:', err)
+  }
+}
 
 /**
  * 获取报告汇总数据
@@ -251,6 +265,7 @@ onMounted(async () => {
   if (!dataId.value) return
   pageLoading.value = true
   await fetchSummary()
+  await fetchConfirmData()
   pageLoading.value = false
 })
 </script>
