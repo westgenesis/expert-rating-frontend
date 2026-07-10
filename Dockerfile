@@ -1,5 +1,5 @@
 # ========== 构建阶段 ==========
-FROM docker.1ms.run/node:18-alpine AS build
+FROM node:18-alpine AS build
 
 # 设置工作目录
 WORKDIR /app
@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # ========== 运行阶段 ==========
-FROM docker.1ms.run/nginx:alpine
+FROM nginx:alpine
 
 # 删除默认 nginx 静态资源
 RUN rm -rf /usr/share/nginx/html/*
