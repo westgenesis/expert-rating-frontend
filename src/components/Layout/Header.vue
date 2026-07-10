@@ -1,5 +1,5 @@
 <template>
-  <div class="h-16 flex items-center justify-between shadow-xs px-4 bg-slate-50">
+  <div class="flex items-center justify-between shadow-xs px-4 py-3 bg-slate-50">
     <h1 class="flex items-center text-lg font-semibold text-[#0054A7]">
       <n-icon size="24" color="#0054A7" class="mr-4" v-if="icon">
         <component :is="icon" />
@@ -7,7 +7,7 @@
       {{ title }}
     </h1>
 
-    <TestObjSelect v-if="isDev" />
+    <TestObjSelect v-if="isAdmin" />
 
     <div class="flex flex-col items-center py-1" v-if="exportInfo">
       <n-avatar round size="small">
@@ -40,5 +40,10 @@ const icon = computed(() => {
   return route.meta.icon || null
 })
 
-const isDev = import.meta.env.DEV
+const isAdmin = computed(() => {
+  return (
+    !exportInfo?.value ||
+    (exportInfo?.value?.name === '管理员' && exportInfo?.value?.email === 'admin@admin.com')
+  )
+})
 </script>

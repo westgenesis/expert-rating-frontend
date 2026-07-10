@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>评测结果</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: #303133;
+        line-height: 1.6;
+        padding: 24px 32px;
+        background: #fff;
+      }
+      h1 {
+        font-size: 28px;
+        font-weight: 800;
+        color: #1e293b;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+      .st {
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 24px;
+      }
+      .s {
+        margin-bottom: 20px;
+      }
+      .stl {
+        font-size: 17px;
+        font-weight: 600;
+        color: #1e293b;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 8px;
+        margin-bottom: 14px;
+      }
+      .ov {
+        display: flex;
+        gap: 32px;
+      }
+      .sp {
+        text-align: center;
+        padding: 24px 20px;
+        background: #f8fafc;
+        border-radius: 8px;
+        min-width: 200px;
+      }
+      .sv {
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--score-color);
+      }
+      .sl {
+        font-size: 13px;
+        color: #64748b;
+        margin: 4px 0 12px;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        background: var(--badge-bg);
+        color: var(--badge-color);
+        border: 1px solid var(--badge-border);
+      }
+      .dt {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .mt {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+      }
+      .mi {
+        background: #f8fafc;
+        border-radius: 6px;
+        padding: 14px 10px;
+        text-align: center;
+      }
+      .mn {
+        font-size: 22px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      .ml {
+        font-size: 12px;
+        color: #64748b;
+      }
+      .jd {
+        background: #fffbeb;
+        border-left: 3px solid #f59e0b;
+        padding: 12px 16px;
+        border-radius: 0 4px 4px 0;
+        font-size: 13px;
+        color: #92400e;
+      }
+      .jd h4 {
+        margin-bottom: 4px;
+      }
+      .jd ul {
+        padding-left: 18px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 14px;
+        font-size: 13px;
+      }
+      th {
+        background: #f1f5f9;
+        color: #475569;
+        font-weight: 600;
+        text-align: left;
+        padding: 9px 10px;
+        border-bottom: 2px solid #e2e8f0;
+      }
+      td {
+        padding: 9px 10px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        vertical-align: top;
+      }
+      .smr {
+        background: #f0f9ff;
+        font-weight: 600;
+      }
+      .severity-A {
+        color: #dc2626;
+        font-weight: 600;
+      }
+      .severity-B {
+        color: #ea580c;
+        font-weight: 600;
+      }
+      .severity-C {
+        color: #ca8a04;
+        font-weight: 600;
+      }
+      .severity-D {
+        color: #16a34a;
+        font-weight: 600;
+      }
+      .rk-高 {
+        color: #dc2626;
+        font-weight: 600;
+      }
+      .rk-中 {
+        color: #f59e0b;
+        font-weight: 600;
+      }
+      .rk-低 {
+        color: #16a34a;
+        font-weight: 600;
+      }
+      .qg {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+      .qc {
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 14px 16px;
+      }
+      .qc h4 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+      .lv {
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+      .lv-优 {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .lv-良 {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .lv-中 {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .lv-差 {
+        background: #fef2f2;
+        color: #991b1b;
+      }
+      .qc p {
+        font-size: 12px;
+        color: #64748b;
+        line-height: 1.6;
+      }
+      .cc {
+        padding: 14px 18px;
+        background: #eff6ff;
+        border-left: 3px solid #3b82f6;
+        border-radius: 0 4px 4px 0;
+      }
+      .cc h4 {
+        color: #1e40af;
+        margin-bottom: 6px;
+      }
+      .cc p {
+        font-size: 13px;
+        color: #1e3a8a;
+        line-height: 1.7;
+      }
+      .sg {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 12px;
+      }
+      .si {
+        padding: 14px 16px;
+        background: #f8fafc;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+      }
+      .si h4 {
+        color: #1e293b;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      .si p {
+        font-size: 13px;
+        color: #475569;
+        line-height: 1.7;
+      }
+      @media print {
+        body {
+          padding: 16px;
+        }
+        .s {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body style="{{CSS_VARS}}">
+    <h1>评测结果</h1>
+    <div class="st">测试对象：{{TEST_OBJECT}}</div>
+
+    <div class="s">
+      <div class="stl">评价概况</div>
+      <div class="ov">
+        <div class="sp">
+          <div class="sv">{{COMPREHENSIVE_SCORE}}</div>
+          <div class="sl">综合评分</div>
+          <span class="badge">{{STATUS_TEXT}}</span>
+        </div>
+        <div class="dt">
+          <div class="mt">
+            <div class="mi">
+              <div class="mn">{{OBJECTIVE_SCORE}}</div>
+              <div class="ml">客观评分</div>
+            </div>
+            <div class="mi">
+              <div class="mn">{{EXPERT_AVG_SCORE}}</div>
+              <div class="ml">专家平均分</div>
+            </div>
+            <div class="mi">
+              <div class="mn">{{TESTCASE_TOTAL}}</div>
+              <div class="ml">测试用例总数</div>
+            </div>
+            <div class="mi">
+              <div class="mn">{{PASS_RATE}}</div>
+              <div class="ml">整体通过率</div>
+            </div>
+            <div class="mi">
+              <div class="mn">{{DEFECT_TOTAL}}</div>
+              <div class="ml">缺陷总数</div>
+            </div>
+          </div>
+          {{JUDGEMENT_BLOCK}}
+        </div>
+      </div>
+    </div>
+
+    <div class="s">
+      <div class="stl">用例执行汇总（按优先级）</div>
+      <table>
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>用例优先级</th>
+            <th>用例数量</th>
+            <th>通过</th>
+            <th>失败</th>
+            <th>异常</th>
+            <th>无判定</th>
+            <th>未执行</th>
+            <th>通过率</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{EXEC_ROWS}}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s">
+      <div class="stl">测试用例明细</div>
+      <table>
+        <thead>
+          <tr>
+            <th>用例编号</th>
+            <th>用例名称</th>
+            <th>测试类型</th>
+            <th>优先级</th>
+            <th>描述信息</th>
+            <th>逻辑用例</th>
+            <th>测试步骤</th>
+            <th>预期结果</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{TC_ROWS}}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s">
+      <div class="stl">缺陷分布统计</div>
+      <table>
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>缺陷等级</th>
+            <th>数量</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{SEV_ROWS}}
+          <tr class="smr">
+            <td colspan="2">缺陷总数</td>
+            <td>{{DEFECT_TOTAL_COUNT}}</td>
+          </tr>
+        </tbody>
+      </table>
+      {{FREQ_TABLE}}
+    </div>
+
+    <div class="s">
+      <div class="stl">缺陷明细清单</div>
+      <table>
+        <thead>
+          <tr>
+            <th>所属测试集</th>
+            <th>缺陷编号</th>
+            <th>关联用例编号</th>
+            <th>缺陷描述</th>
+            <th>严重程度</th>
+            <th>发生频率</th>
+            <th>缺陷场景</th>
+            <th>复现步骤</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{BUG_ROWS}}
+        </tbody>
+      </table>
+    </div>
+
+    {{SCORE_SECTION}} {{REC_SECTION}} {{QUALITY_SECTION}} {{RISK_SECTION}} {{SUGGESTION_SECTION}}
+  </body>
+</html>
