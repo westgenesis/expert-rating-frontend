@@ -80,7 +80,7 @@
         </div>
       </n-card>
       <!-- 底部操作按钮（打印时隐藏） -->
-      <div class="flex justify-end gap-3 pb-4 footer-actions">
+      <div class="flex justify-end gap-3 pb-4 footer-actions" v-if="!confirmData?.['主观确认状态']">
         <ConfirmResult :dataId="dataId" @submit="fetchConfirmData" />
         <n-button type="primary" @click="expertDrawerVisible = true"> 邀请专家评分 </n-button>
       </div>
