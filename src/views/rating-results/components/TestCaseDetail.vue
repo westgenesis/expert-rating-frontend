@@ -1,7 +1,14 @@
 <template>
   <div>
     <h3 class="text-[15px] font-semibold text-slate-700 mt-5 mb-3">测试用例明细</h3>
-    <n-data-table :columns="columns" :data="testcases" :single-line="false" size="small" />
+    <n-data-table
+      :style="{ height: `500px` }"
+      flex-height
+      :columns="columns"
+      :data="testcases"
+      :single-line="false"
+      size="small"
+    />
 
     <!-- 分页 -->
     <div class="flex justify-end py-3">
