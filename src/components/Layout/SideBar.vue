@@ -35,7 +35,7 @@ const { exportInfo } = useExperInfo()
 
 const isAdmin = computed(() => {
   return (
-    !!exportInfo?.value ||
+    !exportInfo?.value ||
     (exportInfo?.value?.name === '管理员' && exportInfo?.value?.email === 'admin@admin.com')
   )
 })
