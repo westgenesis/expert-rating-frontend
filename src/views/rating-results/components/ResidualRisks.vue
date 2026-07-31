@@ -5,26 +5,39 @@
 </template>
 
 <script setup lang="jsx">
+import { residualRiskColumns, RISK_LEVEL_CLASSES, toDataTableColumns } from '../report-schema'
+
 defineOptions({ name: 'ResidualRisks' })
 
 defineProps({ data: { type: Array, default: () => [] } })
 
-const riskClassMap = { 高: 'text-red-600 font-semibold', 中: 'text-amber-500 font-semibold', 低: 'text-green-600 font-semibold' }
-
-const columns = [
-  { title: '风险编号', key: 'risk_id', width: 100 },
-  { title: '风险描述', key: 'description', ellipsis: { tooltip: true } },
-  { title: '风险等级', key: 'level', width: 90,
-    render: (row) => <span class={riskClassMap[row.level] || ''}>{row.level || '--'}</span> },
-  { title: '关联缺陷/用例', key: 'related_items', width: 160,
-    render: (row) => (row.related_items || []).join('、') || '--' },
-  { title: '影响范围', key: 'impact_scope', ellipsis: { tooltip: true } },
-  { title: '应对措施与建议', key: 'mitigation',
-    render: (row) => {
-      const items = row.mitigation || []
-      return items.length
-        ? <ol class="list-decimal pl-4">{items.map((m, i) => <li key={i}>{m}</li>)}</ol>
-        : '--'
-    } },
-]
+/** 列定义与 PDF 导出共用；风险等级与应对措施在页面上额外做富渲染 */
+const columns = toDataTableColumns(
+  residualRiskColumns.map((column) => {
+    if (column.key === 'level') {
+      return {
+        ...column,
+        render: (row) => <span class={RISK_LEVEL_CLASSES[row.level] || ''}>{row.level || '--'}</span>,
+      }
+    }
+    if (column.key === 'mitigation') {
+      return {
+        ...column,
+        render: (row) => {
+          const items = row.mitigation || []
+          return items.length ? (
+            <ol class="list-decimal pl-4">
+              {items.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ol>
+          ) : (
+            '--'
+          )
+        },
+      }
+    }
+    return column
+  }),
+)
 </script>

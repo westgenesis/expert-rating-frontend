@@ -4,7 +4,6 @@
 
     <div class="flex gap-2 items-start">
       <!-- 左侧：缺陷等级分布表 -->
-
       <n-data-table
         :columns="severityColumns"
         :data="severityTableData"
@@ -14,7 +13,7 @@
       />
 
       <!-- 右侧：缺陷发生频率分布图 -->
-      <div v-if="frequencyData && Object.keys(frequencyData).length" class="flex flex-col flex-2/3">
+      <div v-if="hasFrequencyData" class="flex flex-col flex-2/3">
         <div class="text-sm font-semibold text-slate-700 mb-2">缺陷发生频率分布图</div>
         <PieChart :data="frequencyData" :getItemStyle="getFrequencyColor" class="h-[300px]!" />
       </div>
@@ -23,39 +22,36 @@
   </div>
 </template>
 
-<script setup lang="jsx">
+<script setup>
 import { computed } from 'vue'
 import PieChart from '@/components/PieChart.vue'
+import {
+  buildSeverityRows,
+  defectSeverityColumns,
+  FREQUENCY_COLORS,
+  toDataTableColumns,
+} from '../report-schema'
 
 defineOptions({ name: 'DefectStatistics' })
 
 const props = defineProps({ data: { type: Object, default: () => ({}) } })
 
-const severityColumns = [
-  { title: '序号', key: 'index', width: 60 },
-  { title: '缺陷等级', key: 'label' },
-  { title: '数量', key: 'count', width: 80 },
-]
+/** 列定义与 PDF 导出共用 */
+const severityColumns = toDataTableColumns(defectSeverityColumns)
 
-const SEVERITY_LABELS = { A: 'A级（致命）', B: 'B级（严重）', C: 'C级（一般）', D: 'D级（轻微）' }
+/** 缺陷等级分布行，末行为缺陷总数 */
+const severityTableData = computed(() => buildSeverityRows(props.data))
 
-const severityTableData = computed(() => {
-  const dist = props.data?.severity_distribution || {}
-  const rows = Object.entries(dist).map(([key, count], idx) => ({
-    index: idx + 1,
-    label: `${key}（${SEVERITY_LABELS[key] || ''}）`,
-    count,
-  }))
-  rows.push({ index: '', label: '缺陷总数', count: props.data?.total ?? 0, _summary: true })
-  return rows
-})
-
+/** 缺陷发生频率原始分布 */
 const frequencyData = computed(() => props.data?.frequency_distribution || {})
 
-const defectGridStyle = computed(() => ({ gridTemplateColumns: '1.6fr 1fr' }))
+/** 是否存在频率分布数据 */
+const hasFrequencyData = computed(() => Object.keys(frequencyData.value).length > 0)
 
-const getFrequencyColor = (key) => {
-  const colorMap = { 必现: '#ef4444', 偶发: '#f97316', 极少: '#3b82f6' }
-  return { color: colorMap[key] || '#94a3b8' }
-}
+/**
+ * 频率分布饼图的扇区配色，与 PDF 导出共用同一份色板
+ * @param {string} key - 频率名称（必现/偶发/极少）
+ * @returns {{color: string}} ECharts itemStyle
+ */
+const getFrequencyColor = (key) => ({ color: FREQUENCY_COLORS[key] || '#94a3b8' })
 </script>

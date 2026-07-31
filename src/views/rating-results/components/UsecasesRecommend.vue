@@ -23,6 +23,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { postTestcaseRecommend, getTestcaseRecommend } from '@/services/apis'
 import MarkdownPreview from '@/components/MarkdownPreview.vue'
+import { recommendColumns, toDataTableColumns } from '../report-schema'
 
 const props = defineProps({
   dataId: {
@@ -41,32 +42,15 @@ const llmSummarize = computed(() => {
   return recommend.value?.llm_summarize || ''
 })
 
-const columns = ref([
-  // 评分专家 评分 更新时间 备注
-  {
-    title: '用例编号',
-    key: '用例编号',
-  },
-  {
-    title: '用例名称',
-    key: '用例名称',
-  },
-  {
-    title: '前置条件',
-    key: '前置条件',
-  },
-  {
-    title: '测试优先级',
-    key: '测试优先级',
-  },
-  {
-    title: '测试描述',
-    key: '测试描述',
-  },
-])
+/** 列定义与 PDF 导出共用 */
+const columns = toDataTableColumns(recommendColumns)
 
 const loading = ref(false)
 
+/**
+ * 重新触发大模型生成迭代用例推荐
+ * @returns {Promise<void>}
+ */
 const getRecommend = async () => {
   loading.value = true
   const response = await postTestcaseRecommend({
@@ -76,6 +60,10 @@ const getRecommend = async () => {
   loading.value = false
 }
 
+/**
+ * 查询已生成的推荐结果，无结果时保持空态
+ * @returns {Promise<void>}
+ */
 const getHistoryRecommend = async () => {
   const response = await getTestcaseRecommend({
     data_id: props.dataId,

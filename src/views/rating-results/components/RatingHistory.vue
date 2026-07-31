@@ -26,9 +26,9 @@
 
 <script setup lang="jsx">
 import { computed, onMounted, ref } from 'vue'
-import formate from 'date-fns/format'
 import { getTapScoreHistory } from '@/services/apis'
 import RatingForm from '@/views/expert-rating/components/RatingForm/RatingForm.vue'
+import { scoreHistoryColumns, toDataTableColumns } from '../report-schema'
 
 const props = defineProps({
   dataId: {
@@ -39,46 +39,36 @@ const props = defineProps({
 
 const data = ref([])
 
-const columns = ref([
-  // 评分专家 评分 更新时间 备注
-  {
-    title: '评分专家',
-    key: '评分专家',
-  },
-  {
-    title: '评分',
-    key: '评分',
-    render(row) {
-      return row['评分'] ? row['评分'] : <span class="text-red-500">未提交</span>
-    },
-  },
-  {
-    title: '更新时间',
-    key: '更新时间',
-    render(row) {
-      return row['更新时间'] ? formate(new Date(row['更新时间']), 'yyyy-MM-dd HH:mm:ss') : ''
-    },
-  },
-  {
-    title: '备注',
-    key: '备注',
-    render(row) {
-      return row['备注'] ? row['备注'] : '-'
-    },
-  },
+/** 列定义与 PDF 导出共用；「评分」列在页面上把未提交标红，「操作」列不进报告 */
+const columns = [
+  ...toDataTableColumns(
+    scoreHistoryColumns.map((column) =>
+      column.key === '评分'
+        ? {
+            ...column,
+            render: (row) =>
+              row['评分'] != null && row['评分'] !== '' ? (
+                row['评分']
+              ) : (
+                <span class="text-red-500">未提交</span>
+              ),
+          }
+        : column,
+    ),
+  ),
   {
     title: '操作',
+    key: 'actions',
     width: 120,
     align: 'center',
-    render(row) {
-      return row['详情'] ? (
+    render: (row) =>
+      row['详情'] ? (
         <n-button quaternary type="info" onClick={() => handleView(row)}>
           详情
         </n-button>
-      ) : null
-    },
+      ) : null,
   },
-])
+]
 
 const loading = ref(false)
 
@@ -106,6 +96,10 @@ const ratingMatrixFormData = computed(() => {
   }
 })
 
+/**
+ * 拉取专家评分历史
+ * @returns {Promise<void>}
+ */
 const getScoreHistory = async () => {
   loading.value = true
   const response = await getTapScoreHistory({
@@ -115,6 +109,10 @@ const getScoreHistory = async () => {
   loading.value = false
 }
 
+/**
+ * 打开某位专家的打分详情弹窗
+ * @param {object} row - 评分历史行
+ */
 const handleView = (row) => {
   currentRow.value = row
   detailVisible.value = true

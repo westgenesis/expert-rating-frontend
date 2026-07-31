@@ -17,6 +17,7 @@
 <script setup lang="jsx">
 import { ref, onMounted } from 'vue'
 import { getReportDefects } from '@/services/apis'
+import { defectColumns, SEVERITY_TAG_TYPES, toDataTableColumns } from '../report-schema'
 
 defineOptions({ name: 'DefectDetail' })
 
@@ -27,34 +28,29 @@ const pageSize = ref(200)
 const total = ref(0)
 const defects = ref([])
 
-const severityTypeMap = { A: 'error', B: 'warning', C: 'info', D: 'success' }
+/** 列定义与 PDF 导出共用，严重程度列在页面上额外用彩色标签渲染 */
+const columns = toDataTableColumns(
+  defectColumns.map((column) =>
+    column.key === 'severity'
+      ? {
+          ...column,
+          render: (row) =>
+            row.severity ? (
+              <n-tag bordered={false} size="tiny" type={SEVERITY_TAG_TYPES[row.severity] || 'default'}>
+                {row.severity}
+              </n-tag>
+            ) : (
+              '--'
+            ),
+        }
+      : column,
+  ),
+)
 
-const columns = [
-  { title: '所属测试集', key: 'testsuite_names', render: (row) => joinArr(row.testsuite_names) },
-  { title: '缺陷编号', key: 'bug_id', width: 110 },
-  {
-    title: '关联用例编号',
-    key: 'associated_testcase_ids',
-    render: (row) => joinArr(row.associated_testcase_ids),
-  },
-  { title: '缺陷描述', key: 'title', ellipsis: { tooltip: true } },
-  {
-    title: '严重程度',
-    key: 'severity',
-    width: 90,
-    render: (row) =>
-      row.severity ? (
-        <n-tag bordered={false} size="tiny" type={severityTypeMap[row.severity] || 'default'}>
-          {row.severity}
-        </n-tag>
-      ) : (
-        '--'
-      ),
-  },
-  { title: '发生频率', key: 'frequency', width: 90 },
-  { title: '缺陷场景', key: 'defect_scenario', width: 110 },
-]
-
+/**
+ * 拉取当前页的缺陷明细
+ * @returns {Promise<void>}
+ */
 const fetchDefects = async () => {
   if (!props.dataId) return
   try {
@@ -69,11 +65,6 @@ const fetchDefects = async () => {
     console.error('获取缺陷列表失败:', err)
     defects.value = []
   }
-}
-
-const joinArr = (arr) => {
-  if (!arr || !arr.length) return '--'
-  return arr.join('、')
 }
 
 onMounted(() => {

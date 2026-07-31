@@ -22,9 +22,10 @@
   </div>
 </template>
 
-<script setup lang="jsx">
+<script setup>
 import { ref, onMounted } from 'vue'
 import { getReportTestcases } from '@/services/apis'
+import { testcaseColumns, toDataTableColumns } from '../report-schema'
 
 defineOptions({
   name: 'TestCaseDetail',
@@ -39,38 +40,13 @@ const pageSize = ref(200)
 const total = ref(0)
 const testcases = ref([])
 
-/** n-data-table 列定义 */
-const columns = [
-  {
-    title: '用例编号',
-    key: 'testcase_number',
-    width: 130,
-    render: (row) => row.testcase_number || row.testcase_id || '--',
-  },
-  { title: '用例名称', key: 'testcase_name', ellipsis: { tooltip: true } },
-  { title: '测试类型', key: 'testcase_type', width: 100 },
-  { title: '优先级', key: 'priority', width: 90 },
-  { title: '描述信息', key: 'description', ellipsis: { tooltip: true } },
-  // {
-  //   title: '逻辑用例',
-  //   key: 'logical_cases',
-  //   ellipsis: { tooltip: true },
-  //   render: (row) => (row.logical_cases || []).map((item) => item.ctcNum).join('；') || '--',
-  // },
-  {
-    title: '测试步骤',
-    key: 'steps',
-    ellipsis: { tooltip: true },
-    render: (row) => formatSteps(row.steps),
-  },
-  {
-    title: '预期结果',
-    key: 'expected_results',
-    ellipsis: { tooltip: true },
-    render: (row) => (row.expected_results || []).join('\n') || '--',
-  },
-]
+/** 列定义与 PDF 导出共用 */
+const columns = toDataTableColumns(testcaseColumns)
 
+/**
+ * 拉取当前页的测试用例明细
+ * @returns {Promise<void>}
+ */
 const fetchTestcases = async () => {
   if (!props.dataId) return
   try {
@@ -85,14 +61,6 @@ const fetchTestcases = async () => {
     console.error('获取测试用例列表失败:', err)
     testcases.value = []
   }
-}
-
-const formatSteps = (steps) => {
-  if (!steps || !steps.length) return '--'
-  return steps
-    .sort((a, b) => (parseInt(a.order, 10) || 0) - (parseInt(b.order, 10) || 0))
-    .map((s) => s.action)
-    .join('\n')
 }
 
 onMounted(() => {
