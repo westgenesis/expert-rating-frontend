@@ -51,12 +51,12 @@ const columns = [
   { title: '测试类型', key: 'testcase_type', width: 100 },
   { title: '优先级', key: 'priority', width: 90 },
   { title: '描述信息', key: 'description', ellipsis: { tooltip: true } },
-  {
-    title: '逻辑用例',
-    key: 'logical_cases',
-    ellipsis: { tooltip: true },
-    render: (row) => (row.logical_cases || []).map((item) => item.ctcNum).join('；') || '--',
-  },
+  // {
+  //   title: '逻辑用例',
+  //   key: 'logical_cases',
+  //   ellipsis: { tooltip: true },
+  //   render: (row) => (row.logical_cases || []).map((item) => item.ctcNum).join('；') || '--',
+  // },
   {
     title: '测试步骤',
     key: 'steps',

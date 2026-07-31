@@ -40,18 +40,18 @@
 
       <!-- AI 分析区域 -->
       <template v-if="analysisData">
+        <!-- 遗留风险分析 -->
+        <ResidualRisks
+          v-if="analysisData.residual_risks?.length"
+          :data="analysisData.residual_risks"
+          class="mb-5"
+        />
+
         <!-- 整体质量分析 -->
         <QualityAnalysis
           v-if="analysisData.quality_analysis?.length"
           :data="analysisData.quality_analysis"
           :conclusion="analysisData.conclusion || ''"
-          class="mb-5"
-        />
-
-        <!-- 遗留风险分析 -->
-        <ResidualRisks
-          v-if="analysisData.residual_risks?.length"
-          :data="analysisData.residual_risks"
           class="mb-5"
         />
 

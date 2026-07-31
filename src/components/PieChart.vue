@@ -27,9 +27,9 @@ const props = defineProps({
 const baseOption = computed(() => {
   return {
     legend: {
-      orient: 'vertical',
-      left: 'right',
-      top: 'center',
+      orient: 'horizontal',
+      left: 'top',
+      top: 'top',
       icon: 'circle',
       align: 'left',
       itemWidth: 10,
@@ -57,8 +57,8 @@ const baseOption = computed(() => {
     series: [
       {
         type: 'pie',
-        radius: '90%',
-        center: ['30%', '50%'],
+        radius: '100%',
+        center: ['50%', '50%'],
         data: Object.keys(props.data).map((key) => {
           const value = props.data[key]
           return {

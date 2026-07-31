@@ -2,16 +2,21 @@
   <div>
     <h3 class="text-[15px] font-semibold text-slate-700 mb-3">缺陷分布统计</h3>
 
-    <div class="grid gap-10 items-start" :style="defectGridStyle">
+    <div class="flex gap-2 items-start">
       <!-- 左侧：缺陷等级分布表 -->
-      <div>
-        <n-data-table :columns="severityColumns" :data="severityTableData" :single-line="false" size="small" />
-      </div>
+
+      <n-data-table
+        :columns="severityColumns"
+        :data="severityTableData"
+        :single-line="false"
+        size="small"
+        class="flex-1/3 min-w-[300px]"
+      />
 
       <!-- 右侧：缺陷发生频率分布图 -->
-      <div v-if="frequencyData && Object.keys(frequencyData).length" class="flex flex-col">
+      <div v-if="frequencyData && Object.keys(frequencyData).length" class="flex flex-col flex-2/3">
         <div class="text-sm font-semibold text-slate-700 mb-2">缺陷发生频率分布图</div>
-        <PieChart :data="frequencyData" :getItemStyle="getFrequencyColor" class="!h-[220px]" />
+        <PieChart :data="frequencyData" :getItemStyle="getFrequencyColor" class="h-[300px]!" />
       </div>
       <n-empty v-else class="py-8" description="暂无频率分布数据" />
     </div>

@@ -256,7 +256,7 @@
   </head>
   <body style="{{CSS_VARS}}">
     <h1>评测结果</h1>
-    <div class="st">测试对象：{{TEST_OBJECT}}</div>
+    <div class="stl">测试对象：{{TEST_OBJECT}}</div>
 
     <div class="s">
       <div class="stl">评价概况</div>
@@ -304,8 +304,6 @@
             <th>用例数量</th>
             <th>通过</th>
             <th>失败</th>
-            <th>异常</th>
-            <th>无判定</th>
             <th>未执行</th>
             <th>通过率</th>
           </tr>
@@ -326,7 +324,7 @@
             <th>测试类型</th>
             <th>优先级</th>
             <th>描述信息</th>
-            <th>逻辑用例</th>
+            <!-- <th>逻辑用例</th> -->
             <th>测试步骤</th>
             <th>预期结果</th>
           </tr>
@@ -370,7 +368,6 @@
             <th>严重程度</th>
             <th>发生频率</th>
             <th>缺陷场景</th>
-            <th>复现步骤</th>
           </tr>
         </thead>
         <tbody>
@@ -379,6 +376,6 @@
       </table>
     </div>
 
-    {{SCORE_SECTION}} {{REC_SECTION}} {{QUALITY_SECTION}} {{RISK_SECTION}} {{SUGGESTION_SECTION}}
+    {{SCORE_SECTION}} {{REC_SECTION}} {{RISK_SECTION}} {{QUALITY_SECTION}} {{SUGGESTION_SECTION}}
   </body>
 </html>

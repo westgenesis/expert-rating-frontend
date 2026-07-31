@@ -30,26 +30,38 @@ const defects = ref([])
 const severityTypeMap = { A: 'error', B: 'warning', C: 'info', D: 'success' }
 
 const columns = [
-  { title: '所属测试集', key: 'testsuite_names',
-    render: (row) => joinArr(row.testsuite_names) },
+  { title: '所属测试集', key: 'testsuite_names', render: (row) => joinArr(row.testsuite_names) },
   { title: '缺陷编号', key: 'bug_id', width: 110 },
-  { title: '关联用例编号', key: 'associated_testcase_ids',
-    render: (row) => joinArr(row.associated_testcase_ids) },
+  {
+    title: '关联用例编号',
+    key: 'associated_testcase_ids',
+    render: (row) => joinArr(row.associated_testcase_ids),
+  },
   { title: '缺陷描述', key: 'title', ellipsis: { tooltip: true } },
-  { title: '严重程度', key: 'severity', width: 90,
-    render: (row) => row.severity
-      ? <n-tag bordered={false} size="tiny" type={severityTypeMap[row.severity] || 'default'}>{row.severity}</n-tag>
-      : '--' },
+  {
+    title: '严重程度',
+    key: 'severity',
+    width: 90,
+    render: (row) =>
+      row.severity ? (
+        <n-tag bordered={false} size="tiny" type={severityTypeMap[row.severity] || 'default'}>
+          {row.severity}
+        </n-tag>
+      ) : (
+        '--'
+      ),
+  },
   { title: '发生频率', key: 'frequency', width: 90 },
   { title: '缺陷场景', key: 'defect_scenario', width: 110 },
-  { title: '复现步骤', key: 'reproduction_steps', ellipsis: { tooltip: true } },
 ]
 
 const fetchDefects = async () => {
   if (!props.dataId) return
   try {
     const { data } = await getReportDefects({
-      data_id: props.dataId, page: page.value, page_size: pageSize.value,
+      data_id: props.dataId,
+      page: page.value,
+      page_size: pageSize.value,
     })
     defects.value = data?.data || []
     total.value = data?.total || 0
@@ -64,5 +76,7 @@ const joinArr = (arr) => {
   return arr.join('、')
 }
 
-onMounted(() => { fetchDefects() })
+onMounted(() => {
+  fetchDefects()
+})
 </script>

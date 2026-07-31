@@ -35,8 +35,8 @@ const columns = [
   { title: '用例数量', key: 'total' },
   { title: '测试通过用例数', key: 'passed' },
   { title: '测试失败用例数', key: 'failed' },
-  { title: '异常用例数', key: 'abnormal' },
-  { title: '无判定用例数', key: 'undetermined' },
+  // { title: '异常用例数', key: 'abnormal' },
+  // { title: '无判定用例数', key: 'undetermined' },
   { title: '未执行用例数', key: 'not_executed' },
   { title: '测试通过率', key: 'pass_rate' },
 ]
@@ -72,7 +72,9 @@ const dataSummary = computed(() => {
   const allRow = props.data.find((item) => item.priority === '全部')
   if (!allRow) return ''
   const { total, passed, failed, pass_rate } = allRow
-  return `本次测试共覆盖 ${total} 条用例，整体通过率 ${pass_rate}%。` +
+  return (
+    `本次测试共覆盖 ${total} 条用例，整体通过率 ${pass_rate}%。` +
     (failed > 0 ? `共有 ${failed} 条用例失败，是本次测试的主要关注点。` : '所有用例全部通过。')
+  )
 })
 </script>

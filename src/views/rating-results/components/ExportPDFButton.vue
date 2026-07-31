@@ -55,19 +55,6 @@ const joinArr = (arr) => {
 }
 
 /**
- * 格式化测试步骤
- * @param {Array} steps
- * @returns {string}
- */
-const fmtSteps = (steps) => {
-  if (!steps || !steps.length) return '--'
-  return steps
-    .sort((a, b) => (parseInt(a.order, 10) || 0) - (parseInt(b.order, 10) || 0))
-    .map((s) => s.action)
-    .join('；')
-}
-
-/**
  * 导出PDF报告
  * 获取全部数据 → 填充HTML模板 → 新窗口打印
  */
@@ -110,7 +97,7 @@ const handleExport = async () => {
         <tr class="${r.priority === '全部' ? 'summary-row' : ''}">
           ${r.priority === '全部' ? '<td colspan="2" style="text-align:center">汇总</td>' : `<td>${i + 1}</td><td>${esc(r.priority)}</td>`}
           <td>${r.total ?? '--'}</td><td>${r.passed ?? '--'}</td><td>${r.failed ?? '--'}</td>
-          <td>${r.abnormal ?? 0}</td><td>${r.undetermined ?? 0}</td><td>${r.not_executed ?? 0}</td>
+          <td>${r.not_executed ?? 0}</td>
           <td>${r.pass_rate != null ? r.pass_rate + '%' : '--'}</td>
         </tr>`,
     )
@@ -136,9 +123,11 @@ const handleExport = async () => {
     .map(
       (r) => `
         <tr>
-          <td>${esc(r.testcase_number || r.testcase_id)}</td><td>${esc(r.testcase_name)}</td>
-          <td>${esc(r.testcase_type)}</td><td>${esc(r.priority)}</td><td>${esc(r.description)}</td>
-          <td>${esc((r.logical_cases || []).map((item) => item.ctcNum).join('；'))}</td><td>${esc(fmtSteps(r.steps))}</td>
+          <td>${esc(r.testcase_number || r.testcase_id)}</td>
+          <td>${esc(r.testcase_name)}</td>
+          <td>${esc(r.testcase_type)}</td>
+          <td>${esc(r.priority)}</td>
+          <td>${esc(r.description)}</td>
           <td>${esc((r.expected_results || []).join('；'))}</td>
         </tr>`,
     )
@@ -152,7 +141,6 @@ const handleExport = async () => {
           <td>${esc(joinArr(r.associated_testcase_ids))}</td><td>${esc(r.title)}</td>
           <td class="severity-${r.severity || ''}">${esc(r.severity)}</td>
           <td>${esc(r.frequency)}</td><td>${esc(r.defect_scenario)}</td>
-          <td>${esc(r.reproduction_steps)}</td>
         </tr>`,
     )
     .join('')
@@ -240,20 +228,38 @@ const handleExport = async () => {
   const html = template
     .replace('{{CSS_VARS}}', cssVars)
     .replace('{{TEST_OBJECT}}', esc(testObj))
-    .replace('{{COMPREHENSIVE_SCORE}}', overview.comprehensive_score != null ? overview.comprehensive_score.toFixed(2) : '--')
+    .replace(
+      '{{COMPREHENSIVE_SCORE}}',
+      overview.comprehensive_score != null ? overview.comprehensive_score.toFixed(2) : '--',
+    )
     .replace('{{STATUS_TEXT}}', esc(overview.status_text || (passed ? '测试通过' : '测试未通过')))
-    .replace('{{OBJECTIVE_SCORE}}', overview.objective_score != null ? overview.objective_score.toFixed(2) : '--')
-    .replace('{{EXPERT_AVG_SCORE}}', overview.expert_average_score != null ? overview.expert_average_score.toFixed(2) : '--')
+    .replace(
+      '{{OBJECTIVE_SCORE}}',
+      overview.objective_score != null ? overview.objective_score.toFixed(2) : '--',
+    )
+    .replace(
+      '{{EXPERT_AVG_SCORE}}',
+      overview.expert_average_score != null ? overview.expert_average_score.toFixed(2) : '--',
+    )
     .replace('{{TESTCASE_TOTAL}}', overview.testcase_total ?? '--')
-    .replace('{{PASS_RATE}}', overview.overall_pass_rate != null ? overview.overall_pass_rate + '%' : '--')
+    .replace(
+      '{{PASS_RATE}}',
+      overview.overall_pass_rate != null ? overview.overall_pass_rate + '%' : '--',
+    )
     .replace('{{DEFECT_TOTAL}}', overview.defect_total ?? '--')
     .replace('{{JUDGEMENT_BLOCK}}', judgementBlock)
     .replace('{{EXEC_ROWS}}', execRows)
-    .replace('{{TC_ROWS}}', tcRows || '<tr><td colspan="8" style="text-align:center;color:#94a3b8">暂无数据</td></tr>')
+    .replace(
+      '{{TC_ROWS}}',
+      tcRows || '<tr><td colspan="8" style="text-align:center;color:#94a3b8">暂无数据</td></tr>',
+    )
     .replace('{{SEV_ROWS}}', sevRows)
     .replace('{{FREQ_TABLE}}', freqTable)
     .replace('{{DEFECT_TOTAL_COUNT}}', defStats.total ?? 0)
-    .replace('{{BUG_ROWS}}', bugRows || '<tr><td colspan="8" style="text-align:center;color:#94a3b8">暂无数据</td></tr>')
+    .replace(
+      '{{BUG_ROWS}}',
+      bugRows || '<tr><td colspan="8" style="text-align:center;color:#94a3b8">暂无数据</td></tr>',
+    )
     .replace('{{SCORE_SECTION}}', scoreSection)
     .replace('{{REC_SECTION}}', recSection)
     .replace('{{QUALITY_SECTION}}', qualitySection)
