@@ -186,6 +186,22 @@
             />
           </ResetWrapper>
         </n-form-item>
+
+        <n-form-item path="report_quality_analysis_prompt" label="整体质量分析提示词">
+          <ResetWrapper
+            :originalValue="data?.system_config.report_quality_analysis_prompt"
+            v-model="formData.report_quality_analysis_prompt"
+          >
+            <n-input
+              type="textarea"
+              :autosize="{
+                minRows: 3,
+                maxRows: 10,
+              }"
+              v-model:value="formData.report_quality_analysis_prompt"
+            />
+          </ResetWrapper>
+        </n-form-item>
       </n-form>
     </div>
   </n-card>
@@ -222,6 +238,11 @@ const formData = ref({
   execute_score_limit: 20,
   recommend_use_llm: true,
   evaluate_smart_cockpit_prompt: '',
+  test_case_duplication_prompt: '',
+  test_case_duplication_with_tolerance_prompt: '',
+  test_strategy_recommend_prompt: '',
+  docx_rag_conform_prompt: '',
+  report_quality_analysis_prompt: '',
 })
 
 const rules = ref({})
