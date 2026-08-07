@@ -21,7 +21,12 @@ import { CONTENT_WIDTH, TABLE_METRICS } from './pdf/styles'
  */
 
 /** 缺陷等级中文说明 */
-export const SEVERITY_LABELS = { A: 'A级（致命）', B: 'B级（严重）', C: 'C级（一般）', D: 'D级（轻微）' }
+export const SEVERITY_LABELS = {
+  A: 'A级（致命）',
+  B: 'B级（严重）',
+  C: 'C级（一般）',
+  D: 'D级（轻微）',
+}
 
 /** 缺陷等级对应的 n-tag type */
 export const SEVERITY_TAG_TYPES = { A: 'error', B: 'warning', C: 'info', D: 'success' }
@@ -159,7 +164,13 @@ export const testcaseColumns = [
     pdfWidth: 0.8,
     text: (row) => fallback(row.testcase_type),
   },
-  { title: '优先级', key: 'priority', width: 90, pdfWidth: 0.8, text: (row) => fallback(row.priority) },
+  {
+    title: '优先级',
+    key: 'priority',
+    width: 90,
+    pdfWidth: 0.8,
+    text: (row) => fallback(row.priority),
+  },
   {
     title: '描述信息',
     key: 'description',
@@ -210,7 +221,8 @@ export const buildExecutionDataSummary = (rows) => {
   if (!summaryRow) return ''
   const { total, failed, pass_rate: passRate } = summaryRow
   const head = `本次测试共覆盖 ${total} 条用例，整体通过率 ${passRate}%。`
-  const tail = failed > 0 ? `共有 ${failed} 条用例失败，是本次测试的主要关注点。` : '所有用例全部通过。'
+  const tail =
+    failed > 0 ? `共有 ${failed} 条用例失败，是本次测试的主要关注点。` : '所有用例全部通过。'
   return head + tail
 }
 
@@ -236,14 +248,26 @@ export const defectColumns = [
     pdfWidth: 1.8,
     text: (row) => joinList(row.testsuite_names),
   },
-  { title: '缺陷编号', key: 'bug_id', width: 110, pdfWidth: 1, text: (row) => fallback(row.bug_id) },
+  {
+    title: '缺陷编号',
+    key: 'bug_id',
+    width: 110,
+    pdfWidth: 1,
+    text: (row) => fallback(row.bug_id),
+  },
   {
     title: '关联用例编号',
     key: 'associated_testcase_ids',
     pdfWidth: 1.6,
     text: (row) => joinList(row.associated_testcase_ids),
   },
-  { title: '缺陷描述', key: 'title', ellipsis: true, pdfWidth: 3, text: (row) => fallback(row.title) },
+  {
+    title: '缺陷描述',
+    key: 'title',
+    ellipsis: true,
+    pdfWidth: 3,
+    text: (row) => fallback(row.title),
+  },
   {
     title: '严重程度',
     key: 'severity',
@@ -264,6 +288,20 @@ export const defectColumns = [
     width: 110,
     pdfWidth: 1.2,
     text: (row) => fallback(row.defect_scenario),
+  },
+  {
+    title: '所属部门',
+    key: 'department',
+    width: 110,
+    pdfWidth: 1.2,
+    text: (row) => fallback(row.department),
+  },
+  {
+    title: '责任人',
+    key: 'owner',
+    width: 110,
+    pdfWidth: 1.2,
+    text: (row) => fallback(row.owner),
   },
 ]
 
@@ -302,7 +340,13 @@ export const recommendColumns = [
 
 /** 遗留风险分析 */
 export const residualRiskColumns = [
-  { title: '风险编号', key: 'risk_id', width: 100, pdfWidth: 1, text: (row) => fallback(row.risk_id) },
+  {
+    title: '风险编号',
+    key: 'risk_id',
+    width: 100,
+    pdfWidth: 1,
+    text: (row) => fallback(row.risk_id),
+  },
   {
     title: '风险描述',
     key: 'description',
@@ -373,8 +417,7 @@ const LONG_TOKEN = new RegExp(
  * @param {string} text - 单元格文本
  * @returns {string} 处理后的文本
  */
-const softWrap = (text) =>
-  text.replace(LONG_TOKEN, (token) => token.match(/.{1,24}/g).join('\n'))
+const softWrap = (text) => text.replace(LONG_TOKEN, (token) => token.match(/.{1,24}/g).join('\n'))
 
 /**
  * 按相对权重把可用宽度分配给各列

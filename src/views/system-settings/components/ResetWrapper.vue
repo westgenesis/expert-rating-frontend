@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-2 w-full">
     <slot />
 
     <n-button @click="handleReset"> 默认值 </n-button>
