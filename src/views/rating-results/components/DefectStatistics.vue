@@ -53,5 +53,5 @@ const hasFrequencyData = computed(() => Object.keys(frequencyData.value).length 
  * @param {string} key - 频率名称（必现/偶发/极少）
  * @returns {{color: string}} ECharts itemStyle
  */
-const getFrequencyColor = (key) => ({ color: FREQUENCY_COLORS[key] || '#94a3b8' })
+const getFrequencyColor = (key) => ({ color: FREQUENCY_COLORS[key] })
 </script>
