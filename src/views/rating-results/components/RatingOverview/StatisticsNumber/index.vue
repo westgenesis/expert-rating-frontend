@@ -8,7 +8,6 @@
         color="#54A7FF"
       />
       <ScoreBlock
-        v-if="data.expertScore"
         :icon="HatGraduation16Filled"
         title="专家评分"
         :value="data.expertScore"
