@@ -28,8 +28,8 @@ export const SEVERITY_LABELS = {
   D: 'D级（轻微）',
 }
 
-/** 缺陷等级对应的 n-tag type */
-export const SEVERITY_TAG_TYPES = { A: 'error', B: 'warning', C: 'info', D: 'success' }
+/** 缺陷等级对应的 n-tag type；S 比 A 更严重，同样标红 */
+export const SEVERITY_TAG_TYPES = { S: 'error', A: 'error', B: 'warning', C: 'info', D: 'success' }
 
 /** 缺陷发生频率的图表配色，页面饼图与 PDF 饼图共用 */
 export const FREQUENCY_COLORS = { 必现: '#ef4444', 偶发: '#f97316', 极少: '#3b82f6' }

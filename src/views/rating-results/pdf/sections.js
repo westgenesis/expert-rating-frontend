@@ -172,18 +172,33 @@ export const buildDefectStatisticsSection = (statistics = {}) => {
   return nodes
 }
 
+/** 报告只列出达到 A 级及以上的缺陷，其余等级不进明细 */
+const REPORTED_SEVERITIES = ['S', 'A']
+
 /**
- * 缺陷明细清单，严重程度按等级着色
+ * 缺陷明细清单，只保留 A 级及以上，严重程度红色标注
+ *
+ * 上方的缺陷分布统计仍是全量口径，两处条数对不上是预期的，
+ * 因此这里加一行说明，避免被当成漏数据。
  * @param {Array<object>} defects - 全量缺陷
  * @returns {Array<object>} pdfmake 节点数组
  */
-export const buildDefectDetailSection = (defects = []) => [
-  sectionTitle('缺陷明细清单'),
-  toPdfTable(defectColumns, defects, {
-    cellColor: (row, index, key) =>
-      key === 'severity' && row.severity === 'A' ? COLORS.fail : null,
-  }),
-]
+export const buildDefectDetailSection = (defects = []) => {
+  const listed = defects.filter((defect) => REPORTED_SEVERITIES.includes(defect.severity))
+
+  return [
+    sectionTitle('缺陷明细清单'),
+    {
+      text: `说明：仅列出严重程度 A 级及以上（${REPORTED_SEVERITIES.join('、')}）的缺陷，共 ${listed.length} 条；其余等级请见上方缺陷分布统计。`,
+      style: 'note',
+      margin: [0, 0, 0, 6],
+    },
+    toPdfTable(defectColumns, listed, {
+      emptyText: '暂无 A 级及以上缺陷',
+      cellColor: (row, index, key) => (key === 'severity' ? COLORS.fail : null),
+    }),
+  ]
+}
 
 /**
  * 主观评价详情，无数据时整节省略
