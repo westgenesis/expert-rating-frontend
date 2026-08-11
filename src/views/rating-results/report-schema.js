@@ -141,7 +141,7 @@ export const executionSummaryColumns = [
   },
 ]
 
-/** 测试用例明细 */
+/** 测试用例明细；PDF 报告不含该区块，目前只用于页面表格 */
 export const testcaseColumns = [
   {
     title: '用例编号',

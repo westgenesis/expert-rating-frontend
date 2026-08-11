@@ -1,9 +1,4 @@
-import {
-  getReportDefects,
-  getReportTestcases,
-  getTapScoreHistory,
-  getTestcaseRecommend,
-} from '@/services/apis'
+import { getReportDefects, getTapScoreHistory, getTestcaseRecommend } from '@/services/apis'
 
 /** 单次请求的分页大小 */
 const PAGE_SIZE = 200
@@ -14,7 +9,7 @@ const MAX_PAGES = 50
 /**
  * 逐页拉取直到取满 total
  *
- * 导出必须拿到全量数据：旧实现只请求第一页 200 条，用例或缺陷超过 200 条时
+ * 导出必须拿到全量数据：旧实现只请求第一页 200 条，缺陷超过 200 条时
  * 会被静默截断。
  * @param {(params: object) => Promise<object>} request - 分页接口
  * @param {object} params - 除分页参数外的查询条件
@@ -56,26 +51,25 @@ const unwrap = (result, label, failures, fallbackValue) => {
  * 拉取 PDF 导出所需的全部明细数据
  *
  * 概况与大模型分析由报告页面持有，这里只补齐需要额外请求的部分。
+ * 报告不含测试用例明细，因此不请求用例接口。
  * 单个区块失败不阻断导出，但会通过 failures 告知调用方。
  * @param {string} dataId - 测试评测任务唯一ID
- * @returns {Promise<{testcases: Array, defects: Array, scores: Array, recommend: object, failures: Array<string>}>}
+ * @returns {Promise<{defects: Array, scores: Array, recommend: object, failures: Array<string>}>}
  */
 export const fetchReportExportData = async (dataId) => {
   const failures = []
 
   if (!dataId) {
-    return { testcases: [], defects: [], scores: [], recommend: {}, failures }
+    return { defects: [], scores: [], recommend: {}, failures }
   }
 
-  const [testcasesResult, defectsResult, scoresResult, recommendResult] = await Promise.allSettled([
-    fetchAllPages(getReportTestcases, { data_id: dataId }),
+  const [defectsResult, scoresResult, recommendResult] = await Promise.allSettled([
     fetchAllPages(getReportDefects, { data_id: dataId }),
     getTapScoreHistory({ data_id: dataId }),
     getTestcaseRecommend({ data_id: dataId }),
   ])
 
   return {
-    testcases: unwrap(testcasesResult, '测试用例明细', failures, []),
     defects: unwrap(defectsResult, '缺陷明细', failures, []),
     scores: unwrap(scoresResult, '主观评价详情', failures, { data: [] })?.data || [],
     recommend: unwrap(recommendResult, '迭代用例推荐', failures, { data: {} })?.data || {},

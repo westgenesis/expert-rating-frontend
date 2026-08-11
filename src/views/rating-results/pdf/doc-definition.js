@@ -10,7 +10,6 @@ import {
   buildRiskSection,
   buildScoreSection,
   buildSuggestionSection,
-  buildTestcaseSection,
 } from './sections'
 import { COLORS, PAGE, STYLES } from './styles'
 
@@ -21,7 +20,6 @@ import { COLORS, PAGE, STYLES } from './styles'
  * @param {object} params - 数据集合
  * @param {object} params.summary - /report/summary 返回体
  * @param {object|null} params.analysis - 大模型分析结果
- * @param {Array<object>} params.testcases - 全量测试用例
  * @param {Array<object>} params.defects - 全量缺陷
  * @param {Array<object>} params.scores - 专家评分历史
  * @param {object} params.recommend - 迭代用例推荐
@@ -30,7 +28,6 @@ import { COLORS, PAGE, STYLES } from './styles'
 export const buildDocDefinition = ({
   summary = {},
   analysis = null,
-  testcases = [],
   defects = [],
   scores = [],
   recommend = {},
@@ -44,7 +41,6 @@ export const buildDocDefinition = ({
     { text: `测试对象：${testObject}    导出时间：${generatedAt}`, style: 'reportSubtitle' },
     ...buildOverviewSection(summary.overview),
     ...buildExecutionSection(summary.execution_summary),
-    ...buildTestcaseSection(testcases),
     ...buildDefectStatisticsSection(summary.defect_statistics),
     ...buildDefectDetailSection(defects),
     ...buildScoreSection(scores),

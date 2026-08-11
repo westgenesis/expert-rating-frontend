@@ -57,7 +57,6 @@ export const useReportExport = () => {
       const docDefinition = buildDocDefinition({
         summary: summary || {},
         analysis,
-        testcases: exportData.testcases,
         defects: exportData.defects,
         scores: exportData.scores,
         recommend: exportData.recommend,

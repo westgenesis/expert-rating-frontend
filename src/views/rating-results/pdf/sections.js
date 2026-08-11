@@ -13,7 +13,6 @@ import {
   residualRiskColumns,
   RISK_LEVEL_COLORS,
   scoreHistoryColumns,
-  testcaseColumns,
   toPdfTable,
 } from '../report-schema'
 import { PIE_IMAGE_WIDTH, renderPieToDataUrl } from './chart'
@@ -145,16 +144,6 @@ export const buildExecutionSection = (rows = []) => {
 
   return nodes
 }
-
-/**
- * 测试用例明细
- * @param {Array<object>} testcases - 全量用例
- * @returns {Array<object>} pdfmake 节点数组
- */
-export const buildTestcaseSection = (testcases = []) => [
-  sectionTitle('测试用例明细'),
-  toPdfTable(testcaseColumns, testcases),
-]
 
 /**
  * 缺陷分布统计：等级分布表 + 发生频率饼图
