@@ -1,6 +1,6 @@
 # 触发方式：推送到 main 自动部署，或在 Woodpecker 界面手动运行（Run pipeline）
 when:
-  branch: main
+  branch: test
   event: [push, manual]
 
 steps:
@@ -11,5 +11,5 @@ steps:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
-      branch: main
+      branch: test
       event: [push, manual]
