@@ -1,15 +1,21 @@
-# 触发方式：推送到 main 自动部署，或在 Woodpecker 界面手动运行（Run pipeline）
+# 触发方式：
+#   - 推送到 main：自动部署到 production
+#   - 手动运行（Run pipeline）：添加变量 DEPLOY_ENV=<环境名> 选择部署环境，不填默认 production
+#   - deployment 事件：使用部署目标（CI_PIPELINE_DEPLOY_TARGET）作为环境名
+# 可选环境即 deploy/ 目录下的 *.env 文件名：production、development
 when:
-  branch: main
-  event: [push, manual]
+  - branch: main
+    event: [push, manual]
+  - event: deployment
 
 steps:
   - name: deploy
     image: docker:27-cli
     commands:
-      - docker compose up -d --build
+      - DEPLOY_ENV="$${DEPLOY_ENV:-$${CI_PIPELINE_DEPLOY_TARGET:-production}}"
+      - ENV_FILE="deploy/$${DEPLOY_ENV}.env"
+      - 'if [ ! -f "$${ENV_FILE}" ]; then echo "Unknown env: $${DEPLOY_ENV}, available: $(ls deploy)"; exit 1; fi'
+      - echo "Deploying to $${DEPLOY_ENV} with $${ENV_FILE}"
+      - docker compose -p "expert-rating-$${DEPLOY_ENV}" --env-file "$${ENV_FILE}" up -d --build
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    when:
-      branch: main
-      event: [push, manual]

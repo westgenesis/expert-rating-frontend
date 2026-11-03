@@ -1,9 +1,13 @@
+# 变量来自 deploy/<env>.env，通过 --env-file 指定，例如：
+#   docker compose -p expert-rating-production --env-file deploy/production.env up -d --build
 services:
   frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: expert-rating-frontend
+    environment:
+      API_SERVER_URL: ${API_SERVER_URL:?API_SERVER_URL is required}
+      API_SERVER_URL_2: ${API_SERVER_URL_2:?API_SERVER_URL_2 is required}
     ports:
-      - "8099:80" # 本地 8099 → 容器 nginx 80
+      - "${HOST_PORT:-8099}:80" # 宿主机端口 → 容器 nginx 80
     restart: always

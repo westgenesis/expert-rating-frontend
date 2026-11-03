@@ -21,8 +21,11 @@ RUN rm -rf /usr/share/nginx/html/*
 # 拷贝构建产物到 nginx 目录
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# 可选：自定义 nginx 配置（如有）
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# nginx 配置模板：容器启动时官方镜像入口脚本会用 envsubst 渲染到 /etc/nginx/conf.d/default.conf
+COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
+
+# 只替换 API_ 开头的变量，避免误替换 $host 等 nginx 内置变量
+ENV NGINX_ENVSUBST_FILTER=^API_
 
 # 暴露端口（默认80）
 EXPOSE 80
