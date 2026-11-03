@@ -1,0 +1,15 @@
+# 触发方式：推送到 main 自动部署，或在 Woodpecker 界面手动运行（Run pipeline）
+when:
+  branch: main
+  event: [push, manual]
+
+steps:
+  - name: deploy
+    image: docker:27-cli
+    commands:
+      - docker compose up -d --build
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      branch: main
+      event: [push, manual]
