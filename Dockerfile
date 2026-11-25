@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # ========== 运行阶段 ==========
-FROM nginx:alpine
+FROM nginx:1.31.9-alpine
 
 # 删除默认 nginx 静态资源
 RUN rm -rf /usr/share/nginx/html/*
